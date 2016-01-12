@@ -129,50 +129,50 @@ var QUIZ = (function () {
   /**
    * Segments
    */
-  quiz.results = [
+  quiz.criteria = [
     {
       combination: ['B', 'B', 'A/B', 'C', 'A/B/C/D'],
-      results: 'Trend Setter',
+      type: 'Trend Setter',
       segment: 'Expressive'
     },
     {
       combination: ['B', 'A/B/C/D', 'A/B', 'A/B/D', 'A/B/C/D'],
-      results: 'Seeker',
+      type: 'Seeker',
       segment: 'Connected'
     },
     {
       combination: ['D', 'A', 'C', 'A/B', 'A/B/C/D'],
-      results: 'Doer',
+      type: 'Doer',
       segment: 'At Capacity'
     },
     {
       combination: ['D', 'C/D', 'A', 'C', 'A/B/C/D'],
-      results: 'Move and Shaker // Visionary',
+      type: 'Move and Shaker // Visionary',
       segment: 'Drive'
     },
     {
       combination: ['A', 'A/B/D', 'C/D', 'A/B', 'A/B/C/D'],
-      results: 'Uniter',
+      type: 'Uniter',
       segment: 'Rock Steady'
     },
     {
       combination: ['A', 'A/B/C/D', 'A/B', 'A/B/D', 'A/B/C/D'],
-      results: 'Planner // Advocate // Achiever // Partner',
+      type: 'Planner // Advocate // Achiever // Partner',
       segment: 'Down To Earth'
     },
     {
       combination: ['A', 'A/B/C/D', 'A/D', 'C', 'A/B/C/D'],
-      results: 'Giver',
+      type: 'Giver',
       segment: 'Sophisticated'
     },
     {
       combination: ['C', 'A/B/C/D', 'A/D', 'A/B/C/D', 'A/B/C/D'],
-      results: 'Thought Leader',
+      type: 'Thought Leader',
       segment: 'Measure Twice'
     },
     {
       combination: ['C', 'A', 'C/D', 'A/B/C/D', 'A/B/C/D'],
-      results: 'Advocate // Partner',
+      type: 'Advocate // Partner',
       segment: 'Devoted'
     }
 
@@ -251,11 +251,22 @@ var QUIZ = (function () {
       $(document).delegate($form.selector, 'submit', function (event) {
         event.preventDefault();
 
-        // console.log( event, event.currentTarget )
-        // console.log( $(event.currentTarget).serializeArray() )
+        // get form data
+        var answers = getFormData($form)
 
-        console.log( getFormData($form) )
-      
+        // get combination results
+        var results = quiz.getCombinationResults(answers)
+
+
+        // @temp - structure into separate func
+        if ( results ) {
+          var type = results.type;
+          console.log( type )
+          quiz.$el.content.html('<h1>'+results.type+'</h1>')
+        } else {
+          console.log('No combination found')
+          quiz.$el.content.html('<h1>No combination found</h1>')
+        }
 
       })
 
@@ -265,17 +276,53 @@ var QUIZ = (function () {
 
 
   /**
-   * Parse Quiz Answers
+   * Get Combination Results
    * 
    * @param  {Array} answers 
    * @return {Object} 
    */
-  quiz.getCombinationResults = function(answers, questions) {
+  quiz.getCombinationResults = function(answers, criteria) {
 
-    var answers   = answers,
-        questions = questions || quiz.questions;
+    var answers  = answers,
+        criteria = criteria || quiz.criteria;
 
-    
+    // simplify results array
+    var results = [];
+    $.each( answers, function (i, answer) {
+      var question = answer.name,
+          val      = answer.value;
+
+      results.push(val)
+    })
+
+    if ( quiz.config.debug ) console.log( 'getCombinationResults -> results', results)
+
+
+    for(var z = 0; z < criteria.length; z++){
+        var cr = criteria[z];
+        var matches = true;
+        for(var k = 0; k < results.length; k++){
+            var combinationItems = cr.combination[k].split("/"),
+               item = results[k],
+               itemMatches = false;
+
+            for(var i = 0; i < combinationItems.length; i++){
+                if(combinationItems[i] == item){
+                  itemMatches = true;
+                  break;
+                }
+            }
+
+            if(!itemMatches){
+                matches = false;
+                break;
+            }
+        }
+
+        if(matches) return cr;
+    }
+
+    return null;
 
   }
 
@@ -371,9 +418,12 @@ var QUIZ = (function () {
     var $inputs      = $form.find('input, textarea'),
         radio_groups = getRadioGroupNames($form);
 
+    var data = $inputs.serializeArray()
+
+    if ( quiz.config.debug ) console.log('GetFormData', data)
 
     // temporarily just return the serialized array
-    return $inputs.serializeArray()
+    return data;
 
   }
 
