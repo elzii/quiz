@@ -28,6 +28,8 @@ var QUIZ = (function () {
       body : $('body'),
       
       content : $('#content'),
+      
+      output : $('#output'),
 
       form : $('form'),
 
@@ -133,47 +135,56 @@ var QUIZ = (function () {
     {
       combination: ['B', 'B', 'A/B', 'C', 'A/B/C/D'],
       type: 'Trend Setter',
-      segment: 'Expressive'
+      segment: 'Expressive',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta ipsam perspiciatis adipisci architecto aperiam fugit possimus voluptatibus iste cupiditate dolores'
     },
     {
       combination: ['B', 'A/B/C/D', 'A/B', 'A/B/D', 'A/B/C/D'],
       type: 'Seeker',
-      segment: 'Connected'
+      segment: 'Connected',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates necessitatibus fugiat eveniet culpa adipisci debitis! Asperiores aspernatur illo,'
     },
     {
       combination: ['D', 'A', 'C', 'A/B', 'A/B/C/D'],
       type: 'Doer',
-      segment: 'At Capacity'
+      segment: 'At Capacity',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat cum, culpa quisquam odio perspiciatis commodi eos voluptatum nobis hic'
     },
     {
       combination: ['D', 'C/D', 'A', 'C', 'A/B/C/D'],
       type: 'Move and Shaker // Visionary',
-      segment: 'Drive'
+      segment: 'Drive',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat perferendis nihil ullam exercitationem neque, quod perspiciatis laboriosam repellendus recusandae'
     },
     {
       combination: ['A', 'A/B/D', 'C/D', 'A/B', 'A/B/C/D'],
       type: 'Uniter',
-      segment: 'Rock Steady'
+      segment: 'Rock Steady',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum impedit tenetur tempore, iste officiis sunt odio, aspernatur culpa'
     },
     {
       combination: ['A', 'A/B/C/D', 'A/B', 'A/B/D', 'A/B/C/D'],
       type: 'Planner // Advocate // Achiever // Partner',
-      segment: 'Down To Earth'
+      segment: 'Down To Earth',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta, illum praesentium tempore temporibus et officia. Magnam vel,'
     },
     {
       combination: ['A', 'A/B/C/D', 'A/D', 'C', 'A/B/C/D'],
       type: 'Giver',
-      segment: 'Sophisticated'
+      segment: 'Sophisticated',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus aliquam, temporibus, aspernatur, enim totam quae consectetur veniam'
     },
     {
       combination: ['C', 'A/B/C/D', 'A/D', 'A/B/C/D', 'A/B/C/D'],
       type: 'Thought Leader',
-      segment: 'Measure Twice'
+      segment: 'Measure Twice',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit reiciendis ratione, alias velit unde expedita iusto veniam sapiente inventore'
     },
     {
       combination: ['C', 'A', 'C/D', 'A/B/C/D', 'A/B/C/D'],
       type: 'Advocate // Partner',
-      segment: 'Devoted'
+      segment: 'Devoted',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. At dolor exercitationem dicta vitae enim voluptatem, quaerat illo, ipsa'
     }
 
   ]
@@ -223,7 +234,7 @@ var QUIZ = (function () {
 
 
     // submit button
-    $html +='<button type="submit">Submit</button>';
+    $html +='<button class="btn btn-primary" type="submit">Submit</button>';
     $html += '</form>';
 
     quiz.$el.content.append($html)
@@ -251,21 +262,28 @@ var QUIZ = (function () {
       $(document).delegate($form.selector, 'submit', function (event) {
         event.preventDefault();
 
+        // scroll to top
+        scrollToElement({
+          target: 'body'
+        })
+
         // get form data
         var answers = getFormData($form)
 
         // get combination results
-        var results = quiz.getCombinationResults(answers)
+        var result = quiz.getCombinationResults(answers)
 
 
         // @temp - structure into separate func
-        if ( results ) {
-          var type = results.type;
-          console.log( type )
-          quiz.$el.content.html('<h1>'+results.type+'</h1>')
+        if ( result ) {
+          quiz.$el.output.append('\
+            <h1>'+result.type+'</h1> \
+            <h3>'+result.segment+'</h3> \
+            <p>'+result.description+'</p> \
+          ')
         } else {
           console.log('No combination found')
-          quiz.$el.content.html('<h1>No combination found</h1>')
+          quiz.$el.output.append('<h1>No combination found</h1>')
         }
 
       })
@@ -295,31 +313,40 @@ var QUIZ = (function () {
       results.push(val)
     })
 
-    if ( quiz.config.debug ) console.log( 'getCombinationResults -> results', results)
+    // clear output div
+    quiz.$el.output.empty()
 
+    if ( quiz.config.debug ) {
+      console.log( 'getCombinationResults -> results', results)
+      quiz.$el.output.append('<pre>'+results.toString().replace(/(,)/g,'')+'</pre>')
+    }
 
-    for(var z = 0; z < criteria.length; z++){
-        var cr = criteria[z];
-        var matches = true;
-        for(var k = 0; k < results.length; k++){
-            var combinationItems = cr.combination[k].split("/"),
-               item = results[k],
-               itemMatches = false;
+    // Loop results to compare to critiera multidimensional array
+    for ( var z = 0; z < criteria.length; z++) {
 
-            for(var i = 0; i < combinationItems.length; i++){
-                if(combinationItems[i] == item){
-                  itemMatches = true;
-                  break;
-                }
-            }
+      var cr = criteria[z];
+      var matches = true;
 
-            if(!itemMatches){
-                matches = false;
-                break;
-            }
+      for ( var k = 0; k < results.length; k++ ) {
+
+        var combination_items = cr.combination[k].split("/"),
+            item              = results[k],
+            item_matches      = false;
+
+        for( var i = 0; i < combination_items.length; i++ ) {
+          if ( combination_items[i] == item ) {
+            item_matches = true;
+            break;
+          }
         }
 
-        if(matches) return cr;
+        if ( !item_matches ) {
+          matches = false;
+          break;
+        }
+      }
+
+      if ( matches ) return cr;
     }
 
     return null;
@@ -472,6 +499,32 @@ var QUIZ = (function () {
    */
   var getRandomIntInRange = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  /**
+   * Scroll To Element
+   * 
+   * @param  {Object} options 
+   */
+  function scrollToElement(options){
+
+    var duration  = options.duration || 250,
+        easing    = options.easing || 'swing',
+        offset    = options.offset || 0;
+
+    var target    = options.target || false;
+
+    if ( target ) {
+      if ( /(iPhone|iPod)\sOS\s6/.test(navigator.userAgent) ) {
+        $('html, body').animate({
+          scrollTop: $(target).offset().top
+        }, duration, easing);
+      } else {
+        $('html, body').animate({
+          scrollTop: $(target).offset().top - (offset)
+        }, duration, easing);
+      }
+    }
   }
 
 
