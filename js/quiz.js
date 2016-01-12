@@ -16,9 +16,7 @@ var QUIZ = (function () {
     // Config
     config : {
       environment : window.location.href.match(/(localhost|dev)/g) ? 'development' : 'production',
-      debug : window.location.href.match(/(localhost|dev)/g) ? true : false,
-      debug_plugins : window.location.href.match(/(localhost|dev)/g) ? true : false,
-      debug_console: false
+      debug : window.location.href.match(/(localhost|dev|github)/g) ? true : false
     },
 
 
@@ -251,7 +249,7 @@ var QUIZ = (function () {
       _this.submitForm()
 
 
-      quiz.debugForm( $(quiz.$el.form.selector) )
+      if ( quiz.config.debug ) quiz.debugForm( $(quiz.$el.form.selector) )
     },
 
 
