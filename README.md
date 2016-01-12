@@ -2,23 +2,9 @@ quiz
 ======
 
 
+### shell commands
 
-## combinations without results
+* paste invalid combos in `invalid-combinations.txt`
+* to sort / dedupe invalid combos use
 
-AADDC
-BACAA
-BACCC
-BADDB
-BDACD
-CCBCD
-CBBAB
-CDBCD
-CDBBC
-DAADD
-DAACA
-DBACC
-DDBBC
-DDCDC
-DDDBC
-DDAAC
-DDBCD
+`sort invalid-combinations.txt | uniq -u`
