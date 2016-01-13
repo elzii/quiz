@@ -28,9 +28,10 @@ var QUIZ = (function () {
       content : $('#content'),
       
       output : $('#output'),
-
+      
       form : $('form'),
 
+      debug : $('#debug'),
     },
 
 
@@ -248,7 +249,6 @@ var QUIZ = (function () {
       var _this = quiz.events;
       _this.submitForm()
 
-
       if ( quiz.config.debug ) quiz.debugForm( $(quiz.$el.form.selector) )
     },
 
@@ -261,15 +261,14 @@ var QUIZ = (function () {
         event.preventDefault();
 
         // scroll to top
-        scrollToElement({
-          target: 'body'
-        })
+        scrollToElement({target: 'body'})
 
         // get form data
         var answers = getFormData($form)
 
         // get combination results
-        var result = quiz.getCombinationResults(answers)
+        var answers_array = quiz.getQuizAnswersAsArray(answers),
+            result        = quiz.compareCombinationToCriteria(answers_array)
 
 
         // @temp - structure into separate func
@@ -280,8 +279,28 @@ var QUIZ = (function () {
             <p>'+result.description+'</p> \
           ')
         } else {
-          console.log('No combination found')
+          // clear output & debug divs
+          quiz.$el.output.empty()
+          quiz.$el.debug.empty()
+
           quiz.$el.output.append('<h1>No combination found</h1>')
+
+          if ( quiz.config.debug ) {
+
+            var answers_string = answers_array.toString().replace(/(,)/g,'');
+
+            quiz.$el.debug.append('\
+              <div class="alert alert-danger" role="alert"> \
+                <strong>'+answers_string+'</strong> logged to invalid-combations.txt \
+              </div> \
+            ')
+
+            // write dupe combos
+            writeToFile(answers_string, function (res) {
+              console.log('writeToFile', res)
+            })
+            
+          }
         }
 
       })
@@ -297,10 +316,9 @@ var QUIZ = (function () {
    * @param  {Array} answers 
    * @return {Object} 
    */
-  quiz.getCombinationResults = function(answers, criteria) {
+  quiz.getQuizAnswersAsArray = function(answers) {
 
-    var answers  = answers,
-        criteria = criteria || quiz.criteria;
+    var answers  = answers;
 
     // simplify results array
     var results = [];
@@ -311,24 +329,29 @@ var QUIZ = (function () {
       results.push(val)
     })
 
-    // clear output div
-    quiz.$el.output.empty()
+    return results;
 
-    if ( quiz.config.debug ) {
-      console.log( 'getCombinationResults -> results', results)
-      quiz.$el.output.append('<pre>'+results.toString().replace(/(,)/g,'')+'</pre>')
-    }
+  }
 
-    // Loop results to compare to critiera multidimensional array
+
+
+
+
+  quiz.compareCombinationToCriteria = function(answers, criteria) {
+
+    var answers  = answers,
+        criteria = criteria || quiz.criteria;
+
+    // Loop answers to compare to critiera multidimensional array
     for ( var z = 0; z < criteria.length; z++) {
 
       var cr = criteria[z];
       var matches = true;
 
-      for ( var k = 0; k < results.length; k++ ) {
+      for ( var k = 0; k < answers.length; k++ ) {
 
         var combination_items = cr.combination[k].split("/"),
-            item              = results[k],
+            item              = answers[k],
             item_matches      = false;
 
         for( var i = 0; i < combination_items.length; i++ ) {
@@ -346,9 +369,7 @@ var QUIZ = (function () {
 
       if ( matches ) return cr;
     }
-
-    return null;
-
+    
   }
 
 
@@ -524,6 +545,38 @@ var QUIZ = (function () {
       }
     }
   }
+
+
+
+
+  writeToFile = function(line, callback){
+    $.ajax({
+      url: 'ajax.php',
+      type: 'POST',
+      data: {
+        data: line
+      },
+    })
+    .done(function (res) {
+      callback(res)
+    })
+    .fail(function (res) {
+      callback(res)
+    })
+  }
+
+
+  readFileContents = function(filename, callback) {
+    var fso = new ActiveXObject("Scripting.FileSystemObject");
+    var fh = fso.OpenTextFile(filename, 1, false, 0);
+    var lines = "";
+    while (!fh.AtEndOfStream) {
+      lines += fh.ReadLine() + "\r";
+    }
+    fh.Close();
+    return lines;
+  }
+
 
 
 
