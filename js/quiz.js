@@ -249,7 +249,7 @@ var QUIZ = (function () {
       var _this = quiz.events;
       _this.submitForm()
 
-      if ( quiz.config.debug ) quiz.debugForm( $(quiz.$el.form.selector) )
+      if ( quiz.config.debug ) quiz.preselectRadioInputs( $(quiz.$el.form.selector) )
     },
 
 
@@ -271,6 +271,7 @@ var QUIZ = (function () {
             result        = quiz.compareCombinationToCriteria(answers_array)
 
 
+
         // @temp - structure into separate func
         if ( result ) {
           quiz.$el.output.append('\
@@ -285,22 +286,7 @@ var QUIZ = (function () {
 
           quiz.$el.output.append('<h1>No combination found</h1>')
 
-          if ( quiz.config.debug ) {
-
-            var answers_string = answers_array.toString().replace(/(,)/g,'');
-
-            quiz.$el.debug.append('\
-              <div class="alert alert-danger" role="alert"> \
-                <strong>'+answers_string+'</strong> logged to invalid-combations.txt \
-              </div> \
-            ')
-
-            // write dupe combos
-            writeToFile(answers_string, function (res) {
-              console.log('writeToFile', res)
-            })
-            
-          }
+          if ( quiz.config.debug ) quiz.debugInvalidCombations(answers_array)
         }
 
       })
@@ -378,31 +364,64 @@ var QUIZ = (function () {
   /**
    * Debug Form
    */
-  quiz.debugForm = function(form) {
+  quiz.preselectRadioInputs = function(form) {
 
     var $form = form;
 
-    // Preselect Random Radio Inputs
-    function preselectRadioInputs($form) {
-      // preselect random values
-      var radios = getRadioGroupNames($form);
+    // preselect random values
+    var radios = getRadioGroupNames($form);
 
-      $.each( radios, function (i, radio) {
-        var $radio_group = $form.find('#fieldset-'+radio),
-            $radio       = $radio_group.find('input:radio')
+    $.each( radios, function (i, radio) {
+      var $radio_group = $form.find('#fieldset-'+radio),
+          $radio       = $radio_group.find('input:radio')
 
-        // random int between 0-3
-        var rand = getRandomIntInRange(0, 3);
-        $radio.eq(rand).click()
-      })
+      // random int between 0-3
+      var rand = getRandomIntInRange(0, 3);
+      $radio.eq(rand).click()
+    })
 
-      if ( quiz.config.debug ) console.log('preselectRadioInputs')
-    }
-
-    preselectRadioInputs($form)
+    if ( quiz.config.debug ) console.log('preselectRadioInputs')
 
   }
 
+
+
+
+  quiz.debugInvalidCombations = function(answers_array) {
+
+    var answers_string = answers_array.toString().replace(/(,)/g,'');
+
+    quiz.$el.debug.append('\
+      <div class="alert alert-danger" role="alert"> \
+        <strong>'+answers_string+'</strong> logged to invalid-combinations.txt \
+      </div> \
+    ')
+
+    // read file and sort/dedupe
+    readFileContents('invalid-combinations', function (res) {
+      var data = (res + "\n" + answers_string),
+          arr  = data.split("\n")
+
+      // sort
+      arr = arr.sort()
+      // dedupe
+      arr = arr.filter(function (v, i, a) { return a.indexOf (v) == i });
+
+      // convert back to string
+      var data = arr.join('\n')
+
+      // write invalid combos back to file
+      writeToFile({
+        data: data,
+        append: false,
+        filename: 'invalid-combinations.txt'
+      }, function (res) {
+        if ( quiz.config.debug ) console.log('writeToFile -->', answers_string)
+      })
+      
+    })
+
+  }
 
 
   /**
@@ -549,12 +568,14 @@ var QUIZ = (function () {
 
 
 
-  writeToFile = function(line, callback){
+  writeToFile = function(options, callback){
     $.ajax({
       url: 'ajax.php',
       type: 'POST',
       data: {
-        data: line
+        data: options.data,
+        append: options.append,
+        filename: options.filename
       },
     })
     .done(function (res) {
@@ -567,15 +588,20 @@ var QUIZ = (function () {
 
 
   readFileContents = function(filename, callback) {
-    var fso = new ActiveXObject("Scripting.FileSystemObject");
-    var fh = fso.OpenTextFile(filename, 1, false, 0);
-    var lines = "";
-    while (!fh.AtEndOfStream) {
-      lines += fh.ReadLine() + "\r";
-    }
-    fh.Close();
-    return lines;
+    $.ajax({
+      url: filename,
+      type: 'GET'
+    })
+    .done(function (res) {
+      callback(res)
+    })
+    .fail(function (res) {
+      callback(false)
+    })
   }
+
+
+
 
 
 

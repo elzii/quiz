@@ -1,14 +1,18 @@
 <?php
-$file = "invalid-combinations.txt";
+$filename = $_POST['filename'];
+$append   = $_POST['append'];
+$data     = $_POST['data'];
 
-$data = $_POST['data'];
+$write_mode = "w";
 
-$fh  = fopen($file, 'a');
+if ( $append ) {
+  $write_mode = "a";
+}
 
-// $old  = file_get_contents($file);
-// $new  = $old . "\n" . $data;
-// fwrite($fh, $new);
+// $fh  = fopen($filename, $write_mode);
+$fh  = fopen($filename, "w");
 
-fwrite($fh, "\n" . $data);
+// fwrite($fh, "\n" . $data);
+fwrite($fh, $data);
 
 fclose($fh);
