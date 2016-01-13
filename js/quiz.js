@@ -16,7 +16,8 @@ var QUIZ = (function () {
     // Config
     config : {
       environment : window.location.href.match(/(localhost|dev)/g) ? 'development' : 'production',
-      debug : window.location.href.match(/(localhost|dev|github)/g) ? true : false
+      debug : window.location.href.match(/(localhost|dev|github)/g) ? true : false,
+      github : window.location.href.match(/(github)/g) ? true : false
     },
 
 
@@ -260,8 +261,10 @@ var QUIZ = (function () {
       $(document).delegate($form.selector, 'submit', function (event) {
         event.preventDefault();
 
-        // scroll to top
-        scrollToElement({target: 'body'})
+        // scroll to top only on production
+        if ( quiz.config.environment === 'production' ) {
+          scrollToElement({target: 'body'})
+        }
 
         // get form data
         var answers = getFormData($form)
@@ -270,7 +273,9 @@ var QUIZ = (function () {
         var answers_array = quiz.getQuizAnswersAsArray(answers),
             result        = quiz.compareCombinationToCriteria(answers_array)
 
-
+        // clear output & debug divs
+        quiz.$el.output.empty()
+        quiz.$el.debug.empty()
 
         // @temp - structure into separate func
         if ( result ) {
@@ -280,14 +285,14 @@ var QUIZ = (function () {
             <p>'+result.description+'</p> \
           ')
         } else {
-          // clear output & debug divs
-          quiz.$el.output.empty()
-          quiz.$el.debug.empty()
 
           quiz.$el.output.append('<h1>No combination found</h1>')
 
           if ( quiz.config.debug ) quiz.debugInvalidCombations(answers_array)
         }
+
+        // reselect new answers
+        quiz.preselectRadioInputs( $(quiz.$el.form.selector) )
 
       })
 
@@ -416,7 +421,8 @@ var QUIZ = (function () {
         append: false,
         filename: 'invalid-combinations.txt'
       }, function (res) {
-        if ( quiz.config.debug ) console.log('writeToFile -->', answers_string)
+        console.log('%c INVALID COMBINATIONS ', 'background: #f2dede; color: #a94442');
+        console.log('writeToFile -->', answers_string)
       })
       
     })
@@ -599,6 +605,8 @@ var QUIZ = (function () {
       callback(false)
     })
   }
+
+  
 
 
 
