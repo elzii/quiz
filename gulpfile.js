@@ -9,24 +9,35 @@ var gulp         = require('gulp'),
     sourcemaps   = require('gulp-sourcemaps'),
     gutil        = require('gulp-util'),
     uglify       = require('gulp-uglify'),
-    path         = require('path'),
-    tinylr;
+    path         = require('path');
+
+
+
+
+
+
 
 
 /**
- * Asset Paths
+ * Configuration
+ *
+ * paths
+ * ports
+ * options
  */
-var paths = {
-  css: './css',
-  js: './js',
-}
 
-/**
- * Ports
- */
-var ports = {
-  express: 6666,
-  livereload: 6667
+var config = {
+  paths: {
+    css: './css',
+    js: './js',  
+  },
+  ports: {
+    express: 6666,
+    livereload: 6667
+  },
+  options: {
+    minify_css: false
+  }
 }
 
 
@@ -38,19 +49,20 @@ var ports = {
 gulp.task('express', function() {
   var express = require('express')
   var app = express()
-  app.use(require('connect-livereload')({ port: ports.livereload }))
+  app.use(require('connect-livereload')({ port: config.ports.livereload }))
   app.use(express.static(__dirname + '/app'))
-  app.listen( ports.express )
+  app.listen( config.ports.express )
 
-  gutil.log( gutil.colors.black.bgYellow( ' EXPRESS SERVER RUNNING ' ), gutil.colors.bgCyan.black( ' http://localhost:' + ports.express + ' ') )
+  gutil.log( gutil.colors.black.bgYellow( ' EXPRESS SERVER RUNNING ' ), gutil.colors.bgCyan.black( ' http://localhost:' + config.ports.express + ' ') )
 })
 
 /**
  * TASK: Live Reload
  */
+var tinylr;
 gulp.task('livereload', function() {
   tinylr = require('tiny-lr')()
-  tinylr.listen( ports.livereload )
+  tinylr.listen( config.ports.livereload )
 })
 
 
@@ -59,12 +71,21 @@ gulp.task('livereload', function() {
  * TASK: Styles
  */
 gulp.task('styles', function() {
-  return sass( paths.css, { style: 'expanded' })
-    .on('error', logError)
-    .pipe(sourcemaps.init())
-    .pipe(rename({suffix: '.min'}))
-    .pipe(minifycss())
-    .pipe(gulp.dest( paths.css ))
+
+  // Minify CSS
+  if ( config.options.minify_css ) {
+    return sass( config.paths.css, { style: 'expanded' })
+      .on('error', logError)
+      .pipe(sourcemaps.init())
+      .pipe(rename({suffix: '.min'}))
+      .pipe(minifycss())
+      .pipe(gulp.dest( config.paths.css ))
+  } else {
+    return sass( config.paths.css, { style: 'expanded' })
+      .on('error', logError)
+      .pipe(sourcemaps.init())
+      .pipe(gulp.dest( config.paths.css ))
+  }
 })
 
 
@@ -77,15 +98,18 @@ gulp.task('build', function() {
 })
 
 
+
 /**
  * TASK: Watch
  */
 gulp.task('watch', function() {
-  gulp.watch(['./app/css/**/*.scss'], ['styles'], notifyLiveReload)
-  gulp.watch(['./app/css/**/*.css'], notifyLiveReload)
+  gulp.watch([ config.paths.css + '/**/*.scss'], ['styles'], notifyLiveReload)
+  gulp.watch([ config.paths.css + '/**/*.css'], notifyLiveReload)
 })
 
 gulp.task('default', [
+  'express', 
+  'livereload', 
   'styles', 
   'watch'
 ], function() {
@@ -95,15 +119,15 @@ gulp.task('default', [
 
 
 
-
 /**
- * Notify LiveReload
+ * Private Methods
  *
- * 
- * @param  {Object} event 
+ * notifyLiveReload()
+ * logError()
+ * formatError()
  */
-notifyLiveReload = function(event) {
-  var fileName = require('path').relative(__dirname + '/app', event.path)
+function notifyLiveReload(event) {
+  var fileName = require('path').relative(__dirname + '/', event.path)
 
   tinylr.changed({
     body: {
@@ -118,13 +142,14 @@ notifyLiveReload = function(event) {
   gutil.log( gutil.colors.black.bgGreen( ' ' + event.type.toUpperCase() + ' '), gutil.colors.yellow( filename ) )
 
 }
+
 /**
  * Log Error
  * 
  * @param  {Object} error 
- * @return {Object}
+ * @return {Object}  
  */
-logError = function(error) {
+function logError(error) {
 
     var err = formatError(error)
 

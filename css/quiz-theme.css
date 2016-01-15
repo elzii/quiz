@@ -1,0 +1,21 @@
+.quiz {
+  width: 100%;
+}
+.quiz:after {
+  display: table;
+  height: 0;
+  clear: both;
+  content: '';
+}
+
+/**
+ * Quiz Question
+ */
+.quiz-question {
+  width: 50%;
+  float: left;
+}
+
+/**
+ * QUIZ - Form Elements
+ */
