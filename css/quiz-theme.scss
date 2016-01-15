@@ -62,7 +62,7 @@ $quiz : (
 
 
 
-          .quiz-question__inner {
+          .quiz-question__inner {            
             position: relative;
             display: flex; 
             flex-basis: calc(50% - 0px);  
@@ -70,8 +70,12 @@ $quiz : (
             flex-direction: column;
             text-align:center;
 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+
             // debug
-            background: rgba(red, 0.15);
+            background-color: rgba(red, 0.15);
             border: 1px solid red;
 
             text-align: center;

@@ -43,7 +43,10 @@
   justify-content: center;
   flex-direction: column;
   text-align: center;
-  background: rgba(255, 0, 0, 0.15);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-color: rgba(255, 0, 0, 0.15);
   border: 1px solid red;
   text-align: center;
 }

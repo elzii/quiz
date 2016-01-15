@@ -85,7 +85,16 @@ var QUIZ = (function () {
         {'B': '1982-2004 Millenial'},
         {'C': '1924-1945 Maturists (Silent Generation)'},
         {'D': '1965-1981 Generation X'}
-      ]
+      ],
+      // @todo new structure
+      // answers: [
+      //   {
+      //     'A': {
+      //       title: '1946-1964 Baby Boomer',
+      //       image: 'http://i.imgur.com/m6tKDVO.jpg'
+      //     }
+      //   }
+      // ]
     },
 
     '2' : {
