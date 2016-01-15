@@ -55,6 +55,11 @@ var QUIZ = (function () {
     this.events.init()
     
 
+    // Override hooks here, templates below
+    this.hooks.afterSubmit = function(event, data) {
+      console.log('%c HOOK - afterSubmit ', 'background: #029C00; color: #FFFFFF', event, data);
+    }
+
   }
 
 
@@ -316,6 +321,9 @@ var QUIZ = (function () {
         var answers_array = quiz.getQuizAnswersAsArray(answers),
             result        = quiz.compareCombinationToCriteria(answers_array)
 
+        // HOOKS
+        quiz.hooks.afterSubmit( event, answers )
+
         // clear output & debug divs
         quiz.$el.output.empty()
         quiz.$el.debug.empty()
@@ -371,6 +379,13 @@ var QUIZ = (function () {
 
 
 
+  /**
+   * Compare Combination To Criteria
+   * 
+   * @param  {Array} answers  
+   * @param  {Array} criteria 
+   * @return {Array}
+   */
   quiz.compareCombinationToCriteria = function(answers, criteria) {
 
     var answers  = answers,
@@ -405,6 +420,26 @@ var QUIZ = (function () {
     }
     
   }
+
+
+
+
+
+  /**
+   * Hooks
+   * @type {Object}
+   */
+  quiz.hooks = {
+
+
+    afterSubmit: function(event, data) {
+      return [event, data];
+      // console.log('%c HOOK - afterSubmit ', 'background: #029C00; color: #FFFFFF', event, data);
+    }
+
+  }
+
+
 
 
 
