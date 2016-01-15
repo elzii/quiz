@@ -230,12 +230,13 @@ var QUIZ = (function () {
 
       // HTML - wrap questions
       $html += '<div class="quiz-question">';
+      // $html += '  <div class="quiz-question__inner">';
       
       // HTML - title
       $html += '<h4 class="quiz-question__title">'+question+'</h4>';
 
         // HTML - wrap answers in fieldset
-        $html += '<fieldset id="fieldset-'+number+'" class="quiz-question__fieldset quiz-question__answers">';
+        $html += '<div id="fieldset-'+number+'" class="quiz-question__fieldset quiz-question__answers">';
 
         // HTML - hidden input for defaults on unselected radios
         $.each( answers, function (i, a) {
@@ -244,17 +245,19 @@ var QUIZ = (function () {
               answer  = a[key],
               pair_id = number +'-'+ i;
 
-          $html += '<div class="quiz-question__radio radio"> \
+          $html += '<div class="quiz-question__inner"> \
                       <label class="quiz-question__label"> \
-                        <input class="quiz-question__input quiz-question__input--radio" type="radio" name="'+number+'" value="'+key+'" required>'+answer+' \
+                        <input class="quiz-question__input quiz-question__input--radio" type="radio" name="'+number+'" value="'+key+'" required> \
+                          <span>'+answer+'</span> \
                       </label> \
                     </div>';
 
         })
 
 
+      // $html +=       '</div>';
       $html +=     '</div>';
-      $html +=   '</fieldset>';
+      $html +=   '</div>';
       
     })
 

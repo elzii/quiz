@@ -1,9 +1,27 @@
+// clearfix
+@mixin cf() {
+  &:after { display:table;height:0;clear:both;content:'';}
+}
 
+/**
+ * --------------------------
+ * QUIZ-THEME
+ * --------------------------
+ */
+$quiz : (
+  background : #616161,
+  color      : #ffffff
+);
+
+
+/**
+ * Quiz
+ */
 .quiz {
   width:100%;
-  
-  // clearfix
-  &:after { display:table;height:0;clear:both;content:'';}
+  height:100%;
+
+  @include cf();
 
   .quiz-theme {
 
@@ -24,14 +42,102 @@
      * Quiz Question
      */
     .quiz-question {
-      width:50%;
-      float:left;
+      position: relative;
+      display:block;
+      width:100%;
+      height:100%;
+      height:100vh;
+
+      
+
+
+        // form elements
+        .quiz-question__fieldset {
+          min-height: 100%;
+          display: flex;
+          flex-wrap: wrap;
+          flex-direction: row;
+
+        }
+
+
+
+          .quiz-question__inner {
+            position: relative;
+            display: flex; 
+            flex-basis: calc(50% - 0px);  
+            justify-content: center;
+            flex-direction: column;
+            text-align:center;
+
+            // debug
+            background: rgba(red, 0.15);
+            border: 1px solid red;
+
+            text-align: center;
+
+          }
+          // .quiz-question__cell {
+          //   position: absolute;
+          //   top: 0;
+          //   left: 0;
+          //   width: 100%;
+          //   height: 100%;
+          //   display: block;
+          // }
     }
+
+        // Input Radio
+        .quiz-question__input {
+          &.quiz-question__input--radio {
+            // invisible
+            // visibility: hidden;
+            position: absolute;
+            top:0;left:0;
+            width:0;height:0;
+          }
+        }
+
+
+        // Label
+        .quiz-question__label {
+          display: block;
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+
+          text-align: center;
+          font-weight:normal;
+          font-weight:300;
+          margin:0;
+
+          span {
+            // display:table-cell;
+            // vertical-align: middle;
+            
+            // display: block;
+            // height: 100%;
+            // text-align: center;
+            
+            position: absolute;
+            top: 50%;
+            left: 50%;
+
+            transform: translate3d(-50%, -50%, 0);
+
+          }
+        }
+
+
 
       // <h4>
       .quiz-question__title {
-
+        display:none;
       }
+
+
 
       .quiz-question__answers {
 
@@ -46,17 +152,6 @@
   }
 
 
-  /**
-   * Form Elements
-   */
-  .quiz-question__fieldset {}
-  .quiz-question__radio {
-
-  }
-
-  .quiz-question__label {
-
-  }
   .quiz-question__input {
 
   }

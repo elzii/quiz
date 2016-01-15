@@ -68,13 +68,31 @@ var QUIZ_THEME = (function () {
     init: function() {
       var _this = qt.events;
       
+      _this.clickRadioOnContainerClickEvent()
 
     },
 
 
+    clickRadioOnContainerClickEvent: function() {
+      // $(document).delegate('click', '.quiz-question', function (event) {
+
+      //   console.log('clicked')
+
+      //   var $this  = $(this),
+      //       $radio = $this.find('input[type="radio"]')
+
+      //       $radio.click()
+      // })
+    },
     
+    applyClassToRadioParentOnClick: function() {
+      $(document).delegate('click', '.quiz-question__label', function (event) {
+        console.log( 'radio click', event )
+      })
+    }    
 
   }
+
 
 
 
