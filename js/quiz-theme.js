@@ -89,7 +89,19 @@ var QUIZ_THEME = (function () {
       $(document).delegate('click', '.quiz-question__label', function (event) {
         console.log( 'radio click', event )
       })
-    }    
+    },
+
+    applyQuizContainerOverflowWidthPercent: function(form) {
+      var $form = form,
+          count = $form.find('.quiz-question').length;
+
+          count = count * 100;
+
+      $form.attr('width', count+'%');
+
+    }
+
+
 
   }
 

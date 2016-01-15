@@ -51,15 +51,51 @@ var QUIZ = (function () {
     this.renderQuiz({
       questions    : quiz.questions,
       custom_class : 'quiz-theme'
+    }, function ($form) {
+      
     })
+
+    // re-factor into callback?
     this.events.init()
+    this.customEvents.applyQuizContainerOverflowWidthPercent( $(quiz.$el.form.selector) )
     
+    
+
 
     // Override hooks here, templates below
     this.hooks.afterSubmit = function(event, data) {
       console.log('%c HOOK - afterSubmit ', 'background: #029C00; color: #FFFFFF', event, data);
     }
 
+  }
+
+
+
+  /**
+   * Custom Events
+   * @type {Object}
+   */
+  quiz.customEvents = {
+
+    clickRadioOnContainerClickEvent: function() {
+
+    },
+    
+    applyClassToRadioParentOnClick: function() {
+      $(document).delegate('click', '.quiz-question__label', function (event) {
+        console.log( 'radio click', event )
+      })
+    },
+
+    applyQuizContainerOverflowWidthPercent: function(form) {
+      var $form = form,
+          count = $form.find('.quiz-question').length;
+
+          count = count * 100;
+
+      $form.attr('width', count+'%');
+
+    }
   }
 
 
@@ -222,7 +258,7 @@ var QUIZ = (function () {
    * 
    * @param  {Array} questions 
    */
-  quiz.renderQuiz = function(options) {
+  quiz.renderQuiz = function(options, callback) {
 
     var options     = options ? options : {},
         questions   = options.questions || quiz.questions,
@@ -287,6 +323,8 @@ var QUIZ = (function () {
     // append HTML
     quiz.$el.content.append($html)
 
+    // callback
+    if ( callback ) callback( $(quiz.$el.form.selector) )
     return $html;
   }
 
