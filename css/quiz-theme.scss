@@ -6,46 +6,65 @@
   &:after { display:table;height:0;clear:both;content:'';}
 
   .quiz-theme {
-    
+
     &.quiz-theme--default {}
 
   }
 } 
+
+
+  /**
+   * Content
+   */
+  .quiz-questions {
+
+  }
+  
+    /**
+     * Quiz Question
+     */
+    .quiz-question {
+      width:50%;
+      float:left;
+    }
+
+      // <h4>
+      .quiz-question__title {
+
+      }
+
+      .quiz-question__answers {
+
+      }
+
   
   /**
-   * Quiz Question
+   * Footer
    */
-  .quiz-question {
-    width:50%;
-    float:left;
+  .quiz-footer {
+    margin: 10px 0;
   }
 
-    // <h4>
-    .quiz-question__title {
 
-    }
+  /**
+   * Form Elements
+   */
+  .quiz-question__fieldset {}
+  .quiz-question__radio {
 
-    .quiz-question__answers {
+  }
 
-    }
+  .quiz-question__label {
+
+  }
+  .quiz-question__input {
+
+  }
+  
+
+  .quiz-submit {
+
+  }
 
 
-    /**
-     * QUIZ - Form Elements
-     */
-    .quiz-question__fieldset {}
-    .quiz-question__radio {
 
-    }
-
-    .quiz-question__label {
-
-    }
-    .quiz-question__input {
-
-    }
-    
-
-    .quiz-submit {
-
-    }

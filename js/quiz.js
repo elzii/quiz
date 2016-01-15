@@ -214,7 +214,14 @@ var QUIZ = (function () {
         questions   = options.questions || quiz.questions,
         custom_class = options.class ? options.class : 'quiz-theme';
 
-    var $html = '<form class="quiz '+custom_class+'">';
+    var $html = '';
+
+
+    // HTML - form
+    $html += '<form class="quiz '+custom_class+'">';
+    // $html += '  <header class="quiz-header"></header>';
+    
+    $html +=   '<div class="quiz-questions clearfix">';
 
     $.each( quiz.questions, function (number, pair) {
       
@@ -245,18 +252,25 @@ var QUIZ = (function () {
 
         })
 
-        $html += '</div>'
-        $html += '</fieldset>'
+
+      $html +=     '</div>';
+      $html +=   '</fieldset>';
+      
     })
 
+    $html += '</div>'; // Close .quiz-questions wrapper
 
-    // submit button
-    $html +='<button id="quiz-submit" class="quiz-submit btn btn-primary" type="submit">Submit</button>';
+    // HTML - quiz form footer
+    $html += '<footer class="quiz-footer">';
+    $html +=   '<button id="quiz-submit" class="quiz-submit btn btn-primary" type="submit">Submit</button>';
+    $html += '</footer>';
+
     $html += '</form>';
 
+    // append HTML
     quiz.$el.content.append($html)
-    return $html;
 
+    return $html;
   }
 
   

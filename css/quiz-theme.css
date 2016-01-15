@@ -9,6 +9,9 @@
 }
 
 /**
+ * Content
+ */
+/**
  * Quiz Question
  */
 .quiz-question {
@@ -17,5 +20,12 @@
 }
 
 /**
- * QUIZ - Form Elements
+ * Footer
+ */
+.quiz-footer {
+  margin: 10px 0;
+}
+
+/**
+ * Form Elements
  */
