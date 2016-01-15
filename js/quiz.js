@@ -48,7 +48,10 @@ var QUIZ = (function () {
    */
   quiz.init = function () {
     
-    this.printQuestions()
+    this.renderQuiz({
+      questions    : quiz.questions,
+      custom_class : 'quiz-theme'
+    })
     this.events.init()
     
 
@@ -200,12 +203,18 @@ var QUIZ = (function () {
 
 
 
+  /**
+   * Render Quiz Questions
+   * 
+   * @param  {Array} questions 
+   */
+  quiz.renderQuiz = function(options) {
 
-  quiz.printQuestions = function(questions) {
+    var options     = options ? options : {},
+        questions   = options.questions || quiz.questions,
+        custom_class = options.class ? options.class : 'quiz-theme';
 
-    var questions = questions || quiz.questions;
-
-    var $html = '<form>';
+    var $html = '<form class="quiz '+custom_class+'">';
 
     $.each( quiz.questions, function (number, pair) {
       
@@ -213,35 +222,36 @@ var QUIZ = (function () {
           answers  = pair.answers;
 
       // HTML - wrap questions
-      $html += '<h4 class="question-title">'+question+'</h4>';
+      $html += '<div class="quiz-question">';
+      
+      // HTML - title
+      $html += '<h4 class="quiz-question__title">'+question+'</h4>';
 
         // HTML - wrap answers in fieldset
-        $html += '<fieldset id="fieldset-'+number+'" class="answers">';
+        $html += '<fieldset id="fieldset-'+number+'" class="quiz-question__fieldset quiz-question__answers">';
 
         // HTML - hidden input for defaults on unselected radios
-        // UNUSED - duplicate issue
-        // $html += '<input type="hidden" name="'+number+'" value="false" />';
-          
         $.each( answers, function (i, a) {
           // normalize key
           var key     = getAlphaIndex(i),
               answer  = a[key],
               pair_id = number +'-'+ i;
 
-          $html += '<div class="radio"> \
-                      <label><input type="radio" name="'+number+'" value="'+key+'" required>'+answer+'</label> \
+          $html += '<div class="quiz-question__radio radio"> \
+                      <label class="quiz-question__label"> \
+                        <input class="quiz-question__input quiz-question__input--radio" type="radio" name="'+number+'" value="'+key+'" required>'+answer+' \
+                      </label> \
                     </div>';
-
-          // $html += '<div><input type="radio" name="'+number+'" id="answer-'+pair_id+'"><label for="answer-'+pair_id+'">'+answer+'</label></div>';
 
         })
 
-        $html += '</fieldset><hr>'
+        $html += '</div>'
+        $html += '</fieldset>'
     })
 
 
     // submit button
-    $html +='<button class="btn btn-primary" type="submit">Submit</button>';
+    $html +='<button id="quiz-submit" class="quiz-submit btn btn-primary" type="submit">Submit</button>';
     $html += '</form>';
 
     quiz.$el.content.append($html)
