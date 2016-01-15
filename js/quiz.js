@@ -130,6 +130,13 @@ var QUIZ = (function () {
 
   /**
    * Segments
+   * @template
+   {
+     combination: ['B', 'B', 'A/B', 'C', 'A/B/C/D'],
+     type: 'Trend Setter',
+     segment: 'Expressive',
+     description: 'Lorem ipsum dolor sit amet'
+   },
    */
   quiz.criteria = [
     {
@@ -574,6 +581,12 @@ var QUIZ = (function () {
 
 
 
+  /**
+   * Write To File
+   * 
+   * @param  {Object}   options  
+   * @param  {Function} callback 
+   */
   writeToFile = function(options, callback){
     $.ajax({
       url: 'ajax.php',
@@ -606,7 +619,7 @@ var QUIZ = (function () {
     })
   }
 
-  
+
 
 
 
