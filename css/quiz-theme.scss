@@ -92,6 +92,9 @@ $quiz : (
             &:hover {
               background-color: rgba(red, 0.35);
             }
+            &.active {
+              background-color: rgba(red, 0.55);
+            }
           }
 
           // .quiz-question__cell {

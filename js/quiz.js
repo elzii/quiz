@@ -52,12 +52,17 @@ var QUIZ = (function () {
       questions    : quiz.questions,
       custom_class : 'quiz-theme'
     }, function ($form) {
-      
+    
+      quiz.customEvents.applyQuizContainerOverflowWidthPercent( $form )
+      quiz.customEvents.radioOnClick( $form )
+                
     })
 
-    // re-factor into callback?
     this.events.init()
-    this.customEvents.applyQuizContainerOverflowWidthPercent( $(quiz.$el.form.selector) )
+
+
+    // this.customEvents.applyQuizContainerOverflowWidthPercent( $(quiz.$el.form.selector) )
+    // this.customEvents.radioOnClick( $(quiz.$el.form.selector) )
     
     
 
@@ -77,8 +82,25 @@ var QUIZ = (function () {
    */
   quiz.customEvents = {
 
-    clickRadioOnContainerClickEvent: function() {
+    radioOnClick: function ($form) {
+      var $radio = $form.find('.quiz-question__fieldset :radio');
 
+      $radio.on('click', function (event) {
+        var $this    = $(this),
+            parent   = $this.parent().parent()
+
+        quiz.customEvents.clearSelectedRadio($form)
+        parent.addClass('active')
+
+        console.log('$radio.onClick', event )
+
+      })
+
+      // can change to fieldset.onChange
+    },
+
+    clearSelectedRadio: function($form) {
+      $form.find('.quiz-question__inner.active').removeClass('active')
     },
     
     applyClassToRadioParentOnClick: function() {
@@ -336,7 +358,7 @@ var QUIZ = (function () {
       var _this = quiz.events;
       _this.submitForm()
 
-      if ( quiz.config.debug ) quiz.preselectRadioInputs( $(quiz.$el.form.selector) )
+      // if ( quiz.config.debug ) quiz.preselectRadioInputs( $(quiz.$el.form.selector) )
     },
 
 

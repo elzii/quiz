@@ -61,6 +61,9 @@
 .quiz-question .quiz-question__inner:hover {
   background-color: rgba(255, 0, 0, 0.35);
 }
+.quiz-question .quiz-question__inner.active {
+  background-color: rgba(255, 0, 0, 0.55);
+}
 
 .quiz-question__input.quiz-question__input--radio {
   position: absolute;
