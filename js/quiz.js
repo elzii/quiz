@@ -157,7 +157,7 @@ var QUIZ = (function () {
       //       image: 'http://i.imgur.com/m6tKDVO.jpg'
       //     }
       //   }
-      // ]
+      // ] 
     },
 
     '2' : {
