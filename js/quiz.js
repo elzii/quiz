@@ -155,8 +155,12 @@ var QUIZ = (function () {
       console.table([{
         'current_slide': current_slide,
         'next_slide': next_slide,
+        'normalized_index': normalized_index,
         'total_slides': total_slides
       }])
+
+      // Back out if last slide
+      if ( next_slide == total_slides ) return;
 
 
       // Animate
