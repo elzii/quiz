@@ -76,6 +76,20 @@ var QUIZ = (function () {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   /**
    * Custom Events
    * @type {Object}
@@ -86,13 +100,16 @@ var QUIZ = (function () {
       var $radio = $form.find('.quiz-question__fieldset :radio');
 
       $radio.on('click', function (event) {
-        var $this    = $(this),
-            parent   = $this.parent().parent()
+        var $this         = $(this),
+            parent        = $this.parent().parent(),
+            current_slide = parent.parent().parent().index()
 
+        // Clear selected and set active
         quiz.customEvents.clearSelectedRadio($form)
         parent.addClass('active')
 
-        console.log('$radio.onClick', event )
+        // Slide to next question set
+        quiz.customEvents.slideToNextQuestionSet($form, current_slide)
 
       })
 
@@ -109,6 +126,11 @@ var QUIZ = (function () {
       })
     },
 
+    getTotalQuestionCount: function(questions) {
+      var questions = questions || quiz.questions;
+      return Object.keys(quiz.questions).length;
+    },
+
     applyQuizContainerOverflowWidthPercent: function(form) {
       var $form = form,
           count = $form.find('.quiz-question').length;
@@ -117,8 +139,39 @@ var QUIZ = (function () {
 
       $form.attr('width', count+'%');
 
+    },
+
+    slideToNextQuestionSet: function(form, current) {
+      var $form         = form,
+          $questions    = $form.find('.quiz-questions'),
+          total_slides  = quiz.customEvents.getTotalQuestionCount(),
+          current_slide = current,
+          next_slide    = current_slide + 1;
+
+      // Normalize index
+      var normalized_index = current_slide + 1;
+
+      // log
+      console.table([{
+        'current_slide': current_slide,
+        'next_slide': next_slide,
+        'total_slides': total_slides
+      }])
+
+
+      // Animate
+      $questions.animate({
+        'margin-left': '-'+(normalized_index*100)+'%'
+      })
     }
+
   }
+
+
+
+
+
+
 
 
 
@@ -485,6 +538,19 @@ var QUIZ = (function () {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
   /**
    * Hooks
    * @type {Object}
@@ -504,8 +570,17 @@ var QUIZ = (function () {
 
 
 
+
+
+
+
+
+
+
   /**
-   * Debug Form
+   * Preselect Radio Inputs
+   * 
+   * @param  {Element} form 
    */
   quiz.preselectRadioInputs = function(form) {
 
@@ -530,6 +605,11 @@ var QUIZ = (function () {
 
 
 
+  /**
+   * Debug Invalid Combinations
+   * 
+   * @param  {Array} answers_array 
+   */
   quiz.debugInvalidCombations = function(answers_array) {
 
     var answers_string = answers_array.toString().replace(/(,)/g,'');
