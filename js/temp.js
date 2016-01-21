@@ -332,3 +332,71 @@ quiz.criteria = [
 
 
   })
+
+
+
+
+  quiz.questions = {
+
+    '1' : {
+      question: 'Identify the year you were born within the following ranges',
+      answers: [
+        {'A': '1982-2004 Millenial'},
+        {'B': '1965-1981 Generation X'},
+        {'C': '1946-1964 Baby Boomer'},
+        {'D': '1924-1945 Maturists (Silent Generation)'}
+      ]
+    },
+
+    // @todo new structure
+    // answers: [
+    //   {
+    //     'A': {
+    //       title: '1946-1964 Baby Boomer',
+    //       image: 'http://i.imgur.com/m6tKDVO.jpg'
+    //     }
+    //   }
+    // ] 
+    
+
+    '2' : {
+      question: 'How do you spend your free moments?',
+      answers: [
+        {'A': 'With family'},
+        {'B': 'With friends'},
+        {'C': 'On my own'},
+        {'D': 'Being active'}
+      ]
+    },
+
+    '3' : {
+      question: 'What comes to mind when you think about work?',
+      answers: [
+        {'A': 'It’s my passion'},
+        {'B': 'Have to, but don’t love it'},
+        {'C': 'Provide for my family'},
+        {'D': 'Retirement'}
+      ]
+    },
+
+    '4' : {
+      question: 'How do you invest in others?',
+      answers: [
+        {'A': 'Acts of Service'},
+        {'B': 'Quality Time'},
+        {'C': 'Giving Gifts'},
+        {'D': 'Words of Encouragement'}
+      ]
+    },
+
+    '5' : {
+      question: 'What brings you joy?',
+      answers: [
+        {'A': 'Seeing Someone Graduate'},
+        {'B': 'Happy Children'},
+        {'C': 'Clean Bill of Health'},
+        {'D': 'Financial Stability'}
+      ]
+    }
+
+  }

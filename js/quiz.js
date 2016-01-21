@@ -28,6 +28,8 @@ var QUIZ = (function () {
       
       content : $('#content'),
       
+      quiz_container : $('#quiz-container'),
+      
       output : $('#output'),
       
       form : $('form'),
@@ -60,11 +62,15 @@ var QUIZ = (function () {
 
     this.events.init()
 
+    
+    this.loadQuizFile('json/quiz.json', function (res, err) {
+      var questions = res.questions,
+          criteria  = res.criteria;
 
-    // this.customEvents.applyQuizContainerOverflowWidthPercent( $(quiz.$el.form.selector) )
-    // this.customEvents.radioOnClick( $(quiz.$el.form.selector) )
-    
-    
+
+
+
+    })
 
 
     // Override hooks here, templates below
@@ -181,6 +187,12 @@ var QUIZ = (function () {
 
 
 
+  quiz.tempImages = {
+    '1' : 'http://i.imgur.com/K77sVjz.png',
+    '2' : 'http://i.imgur.com/cQ3cS7P.png',
+    '3' : 'http://i.imgur.com/RHiuxk3.png',
+    '4' : 'http://i.imgur.com/a7jrcKt.png',
+  }
 
   /**
    * Quiz
@@ -200,52 +212,114 @@ var QUIZ = (function () {
 
     '1' : {
       question: 'Identify the year you were born within the following ranges',
-      answers: [
-        {'A': '1982-2004 Millenial'},
-        {'B': '1965-1981 Generation X'},
-        {'C': '1946-1964 Baby Boomer'},
-        {'D': '1924-1945 Maturists (Silent Generation)'}
-      ]
+      answers: {
+        'A': {
+          title: '1982-2004 Millenial',
+          image: 'http://i.imgur.com/K77sVjz.png' 
+        },
+        'B': {
+          title: '1965-1981 Generation X',
+          image: 'http://i.imgur.com/cQ3cS7P.png' 
+        },
+        'C': {
+          title: '1946-1964 Baby Boomer',
+          image: 'http://i.imgur.com/RHiuxk3.png' 
+        },
+        'D': {
+          title: '1924-1945 Maturists (Silent Generation)',
+          image: 'http://i.imgur.com/a7jrcKt.png' 
+        }
+      }
     },
+
 
     '2' : {
       question: 'How do you spend your free moments?',
-      answers: [
-        {'A': 'With family'},
-        {'B': 'With friends'},
-        {'C': 'On my own'},
-        {'D': 'Being active'}
-      ]
+      answers: {
+        'A': {
+          title: 'With family',
+          image: 'http://i.imgur.com/K77sVjz.png',
+        },
+        'B': {
+          title: 'With friends',
+          image: 'http://i.imgur.com/cQ3cS7P.png',
+        },
+        'C': {
+          title: 'On my own',
+          image: 'http://i.imgur.com/RHiuxk3.png',
+        },
+        'D': {
+          title: 'Being active',
+          image: 'http://i.imgur.com/a7jrcKt.png',
+        },
+      }
     },
+
 
     '3' : {
       question: 'What comes to mind when you think about work?',
-      answers: [
-        {'A': 'It’s my passion'},
-        {'B': 'Have to, but don’t love it'},
-        {'C': 'Provide for my family'},
-        {'D': 'Retirement'}
-      ]
+      answers: {
+        'A': {
+          title: 'It’s my passion',
+          image: 'http://i.imgur.com/K77sVjz.png',
+        },
+        'B': {
+          title: 'Have to, but don’t love it',
+          image: 'http://i.imgur.com/cQ3cS7P.png',
+        },
+        'C': {
+          title: 'Provide for my family',
+          image: 'http://i.imgur.com/RHiuxk3.png',
+        },
+        'D': {
+          title: 'Retirement',
+          image: 'http://i.imgur.com/a7jrcKt.png',
+        },
+      }
     },
 
     '4' : {
       question: 'How do you invest in others?',
-      answers: [
-        {'A': 'Acts of Service'},
-        {'B': 'Quality Time'},
-        {'C': 'Giving Gifts'},
-        {'D': 'Words of Encouragement'}
-      ]
+      answers: {
+        'A': {
+          title: 'Acts of Service',
+          image: 'http://i.imgur.com/K77sVjz.png',
+        },
+        'B': {
+          title: 'Quality Time',
+          image: 'http://i.imgur.com/cQ3cS7P.png',
+        },
+        'C': {
+          title: 'Giving Gifts',
+          image: 'http://i.imgur.com/RHiuxk3.png',
+        },
+        'D': {
+          title: 'Words of Encouragement',
+          image: 'http://i.imgur.com/a7jrcKt.png',
+        },
+      }
     },
 
     '5' : {
       question: 'What brings you joy?',
-      answers: [
-        {'A': 'Seeing Someone Graduate'},
-        {'B': 'Happy Children'},
-        {'C': 'Clean Bill of Health'},
-        {'D': 'Financial Stability'}
-      ]
+      answers: {
+        'A': {
+          title: 'Seeing Someone Graduate',
+          image: 'http://i.imgur.com/K77sVjz.png',
+        },
+        'B': {
+          title: 'Happy Children',
+          image: 'http://i.imgur.com/cQ3cS7P.png',
+        },
+        'C': {
+          title: 'Clean Bill of Health',
+          image: 'http://i.imgur.com/RHiuxk3.png',
+        },
+        'D': {
+          title: 'Financial Stability',
+          image: 'http://i.imgur.com/a7jrcKt.png',
+        },
+      }
     }
 
   }
@@ -283,13 +357,13 @@ var QUIZ = (function () {
       combination: ['B', 'A', 'A/B/C/D', 'A/B/C/D', 'A/B/C/D'],
       type: 'Doer',
       segment: 'At Capacity',
-      description: 'A full plate never stopped a Doer from doing more. You\'re always on the move, going the extra mile, and lending a hand. You\'re hardworking, prudent, and diligent, and even if you don’t always find the perfect balance, you know what’s most important -- quality time with those you love.'
+      description: 'A full plate never stopped a Doer from doing more. You\'re always on the move, going the extra mile, and lending a hand. You\'re hardworking, prudent, and diligent, and even if you don’t always find the perfect balance, you know what’s most important - quality time with those you love.'
     },
     {
       combination: ['B', 'C/D', 'B/C/D', 'A/B/C/D', 'A/B/C/D'],
       type: 'Doer',
       segment: 'At Capacity',
-      description: 'A full plate never stopped a Doer from doing more. You\'re always on the move, going the extra mile, and lending a hand. You\'re hardworking, prudent, and diligent, and even if you don’t always find the perfect balance, you know what’s most important -- quality time with those you love.'
+      description: 'A full plate never stopped a Doer from doing more. You\'re always on the move, going the extra mile, and lending a hand. You\'re hardworking, prudent, and diligent, and even if you don’t always find the perfect balance, you know what’s most important - quality time with those you love.'
     },
         {
       combination: ['B', 'B', 'A/B/C/D', 'A/B/C/D', 'A/B/C/D'],
@@ -325,37 +399,37 @@ var QUIZ = (function () {
       combination: ['C', 'A/B/C/D', 'C', 'A/B/C/D', 'A/B/C/D'],
       type: 'Uniter',
       segment: 'Rock Steady',
-      description: 'Keep calm and carry on -- that\'s the motto of a Uniter. You\'re responsible, grounded, and can always be counted on to get the job done. Uniters are driven by a sense of purpose and discipline – it\'s the fundamentals that matter most to you.'
+      description: 'Keep calm and carry on - that\'s the motto of a Uniter. You\'re responsible, grounded, and can always be counted on to get the job done. Uniters are driven by a sense of purpose and discipline – it\'s the fundamentals that matter most to you.'
     },
     {
       combination: ['C', 'A/D', 'D', 'A/B/C/D', 'A/B/C/D'],
       type: 'Uniter',
       segment: 'Rock Steady',
-      description: 'Keep calm and carry on -- that\'s the motto of a Uniter. You\'re responsible, grounded, and can always be counted on to get the job done. Uniters are driven by a sense of purpose and discipline – it\'s the fundamentals that matter most to you.'
+      description: 'Keep calm and carry on - that\'s the motto of a Uniter. You\'re responsible, grounded, and can always be counted on to get the job done. Uniters are driven by a sense of purpose and discipline – it\'s the fundamentals that matter most to you.'
     },
     {
       combination: ['D', 'A/B/C', 'A', 'A/B/C/D', 'A/B/C/D'],
       type: 'Planners',
       segment: 'Measure Twice',
-      description: 'Planners are natural role models and leaders. Life is an adventure and you take advantage of every opportunity it hands you, but you do it responsibly. You’ve accumulated a wealth of experience -- and you enjoy mentoring others. You\'re open, diligent, and innovative.'
+      description: 'Planners are natural role models and leaders. Life is an adventure and you take advantage of every opportunity it hands you, but you do it responsibly. You’ve accumulated a wealth of experience - and you enjoy mentoring others. You\'re open, diligent, and innovative.'
     },
     {
       combination: ['D', 'B/C', 'D', 'A/B/C/D', 'A/B/C/D'],
       type: 'Planners',
       segment: 'Measure Twice',
-      description: 'Planners are natural role models and leaders. Life is an adventure and you take advantage of every opportunity it hands you, but you do it responsibly. You’ve accumulated a wealth of experience -- and you enjoy mentoring others. You\'re open, diligent, and innovative.'
+      description: 'Planners are natural role models and leaders. Life is an adventure and you take advantage of every opportunity it hands you, but you do it responsibly. You’ve accumulated a wealth of experience - and you enjoy mentoring others. You\'re open, diligent, and innovative.'
     },
     {
       combination: ['D', 'A/B/C', 'B/C', 'A/B/C/D', 'A/B/C/D'],
       type: 'Partner',
       segment: 'Devoted',
-      description: 'As a Partner, you\'re someone who puts the best of themselves into everything you do. You are a role model -- in your personal life, in your work life, and in your community. You\'re committed, reliable, and values-driven.'
+      description: 'As a Partner, you\'re someone who puts the best of themselves into everything you do. You are a role model - in your personal life, in your work life, and in your community. You\'re committed, reliable, and values-driven.'
     },
     {
       combination: ['D', 'A', 'D', 'A/B/C/D', 'A/B/C/D'],
       type: 'Partner',
       segment: 'Devoted',
-      description: 'As a Partner, you\'re someone who puts the best of themselves into everything you do. You are a role model -- in your personal life, in your work life, and in your community. You\'re committed, reliable, and values-driven.'
+      description: 'As a Partner, you\'re someone who puts the best of themselves into everything you do. You are a role model - in your personal life, in your work life, and in your community. You\'re committed, reliable, and values-driven.'
     },
     {
       combination: ['D', 'D', 'A/D', 'A/B/C/D', 'A/B/C/D'],
@@ -390,7 +464,6 @@ var QUIZ = (function () {
 
     var $html = '';
 
-
     // HTML - form
     $html += '<form class="quiz '+custom_class+'">';
     // $html += '  <header class="quiz-header"></header>';
@@ -402,31 +475,32 @@ var QUIZ = (function () {
       var question = pair.question,
           answers  = pair.answers;
 
-      // HTML - wrap questions
+
       $html += '<div class="quiz-question">';
       // $html += '  <div class="quiz-question__inner">';
-      
-      // HTML - title
       $html += '<h4 class="quiz-question__title">'+question+'</h4>';
+      $html +=   '<div id="fieldset-'+number+'" class="quiz-question__fieldset quiz-question__answers">';
 
-        // HTML - wrap answers in fieldset
-        $html += '<div id="fieldset-'+number+'" class="quiz-question__fieldset quiz-question__answers">';
 
-        // HTML - hidden input for defaults on unselected radios
-        $.each( answers, function (i, a) {
-          // normalize key
-          var key     = getAlphaIndex(i),
-              answer  = a[key],
-              pair_id = number +'-'+ i;
+      $.each( answers, function (key, answer) {
+        
+        // var key     = getAlphaIndex(i),
+            // answer  = a[key],
+            
+        var pair_id = number +'-'+ key;
 
-          $html += '<div class="quiz-question__inner"> \
-                      <label class="quiz-question__label"> \
-                        <input class="quiz-question__input quiz-question__input--radio" type="radio" name="'+number+'" value="'+key+'" required> \
-                          <span>'+answer+'</span> \
-                      </label> \
-                    </div>';
 
-        })
+        // var title   = answer.title,
+        //     image   = answer.image;
+
+        $html += '<div class="quiz-question__inner" style="background-image:url('+answer.image+')"> \
+                    <label class="quiz-question__label"> \
+                      <input class="quiz-question__input quiz-question__input--radio" type="radio" name="'+number+'" value="'+key+'" required> \
+                        <span>'+answer.title+'</span> \
+                    </label> \
+                  </div>';
+
+      })
 
 
       // $html +=       '</div>';
@@ -445,7 +519,7 @@ var QUIZ = (function () {
     $html += '</form>';
 
     // append HTML
-    quiz.$el.content.append($html)
+    quiz.$el.quiz_container.append($html)
 
     // callback
     if ( callback ) callback( $(quiz.$el.form.selector) )
@@ -482,6 +556,8 @@ var QUIZ = (function () {
         // get combination results
         var answers_array = quiz.getQuizAnswersAsArray(answers),
             result        = quiz.compareCombinationToCriteria(answers_array)
+
+        console.log('answers_array',answers_array)
 
         // HOOKS
         quiz.hooks.afterSubmit( event, answers )
@@ -586,6 +662,24 @@ var QUIZ = (function () {
 
 
 
+
+  quiz.loadQuizFile = function(file, callback) {
+
+    $.ajax({
+      url: file,
+      type: 'GET',
+      // dataType: 'json',
+    })
+    .done(function (res, err) {
+      callback(res, err)
+    })
+    .fail(function (res, err) {
+      console.log("error", res, err);
+      callback(false)
+    })
+      
+    
+  }
 
 
 
@@ -866,6 +960,12 @@ var QUIZ = (function () {
   }
 
 
+  /**
+   * Read File Contents
+   * 
+   * @param  {String}   filename 
+   * @param  {Function} callback 
+   */
   readFileContents = function(filename, callback) {
     $.ajax({
       url: filename,
@@ -878,6 +978,7 @@ var QUIZ = (function () {
       callback(false)
     })
   }
+
 
 
 
