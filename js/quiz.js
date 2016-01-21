@@ -166,7 +166,7 @@ var QUIZ = (function () {
       // Animate
       $questions.animate({
         'margin-left': '-'+(normalized_index*100)+'%'
-      })
+      }, 0)
     }
 
   }
@@ -201,20 +201,11 @@ var QUIZ = (function () {
     '1' : {
       question: 'Identify the year you were born within the following ranges',
       answers: [
-        {'A': '1946-1964 Baby Boomer'},
-        {'B': '1982-2004 Millenial'},
-        {'C': '1924-1945 Maturists (Silent Generation)'},
-        {'D': '1965-1981 Generation X'}
-      ],
-      // @todo new structure
-      // answers: [
-      //   {
-      //     'A': {
-      //       title: '1946-1964 Baby Boomer',
-      //       image: 'http://i.imgur.com/m6tKDVO.jpg'
-      //     }
-      //   }
-      // ] 
+        {'A': '1982-2004 Millenial'},
+        {'B': '1965-1981 Generation X'},
+        {'C': '1946-1964 Baby Boomer'},
+        {'D': '1924-1945 Maturists (Silent Generation)'}
+      ]
     },
 
     '2' : {
@@ -262,71 +253,125 @@ var QUIZ = (function () {
 
   /**
    * Segments
-   * @template
-   {
-     combination: ['B', 'B', 'A/B', 'C', 'A/B/C/D'],
-     type: 'Trend Setter',
-     segment: 'Expressive',
-     description: 'Lorem ipsum dolor sit amet'
-   },
    */
   quiz.criteria = [
     {
-      combination: ['B', 'B', 'A/B', 'C', 'A/B/C/D'],
+      combination: ['A', 'A', 'A/B/C/D', 'A/B/C/D', 'A/B/C/D'],
+      type: 'Connector',
+      segment: 'Connected',
+      description: 'As a Connector, you like learning about the world around you and love when family and friends join you for the ride. You’re interested in experiencing your community in a close-up and personal way, and finding ways to improve it and yourself. You’re open-minded about new directions and balanced when it comes to priorities.'
+    },
+    {
+      combination: ['A', 'C/D', 'B/C/D', 'A/B/C/D', 'A/B/C/D'],
+      type: 'Connector',
+      segment: 'Connected',
+      description: 'As a Connector, you like learning about the world around you and love when family and friends join you for the ride. You’re interested in experiencing your community in a close-up and personal way, and finding ways to improve it and yourself. You’re open-minded about new directions and balanced when it comes to priorities.'
+    },
+    {
+      combination: ['A', 'B', 'A/B/C/D', 'A/B/C/D', 'A/B/C/D'],
       type: 'Trend Setter',
       segment: 'Expressive',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta ipsam perspiciatis adipisci architecto aperiam fugit possimus voluptatibus iste cupiditate dolores'
+      description: 'As a Trend Setter, you\'re unique and not afraid to forge your own path, knowing that others may follow your lead. By marching to the beat of your own drum, you naturally inspire others to take risks and challenge the status quo. You\'re confident, independent, and capable.'
     },
     {
-      combination: ['B', 'A/B/C/D', 'A/B', 'A/B/D', 'A/B/C/D'],
-      type: 'Seeker',
-      segment: 'Connected',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates necessitatibus fugiat eveniet culpa adipisci debitis! Asperiores aspernatur illo,'
+      combination: ['A', 'C/D', 'A', 'A/B/C/D', 'A/B/C/D'],
+      type: 'Trend Setter',
+      segment: 'Expressive',
+      description: 'As a Trend Setter, you\'re unique and not afraid to forge your own path, knowing that others may follow your lead. By marching to the beat of your own drum, you naturally inspire others to take risks and challenge the status quo. You\'re confident, independent, and capable.'
     },
     {
-      combination: ['D', 'A', 'C', 'A/B', 'A/B/C/D'],
+      combination: ['B', 'A', 'A/B/C/D', 'A/B/C/D', 'A/B/C/D'],
       type: 'Doer',
       segment: 'At Capacity',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat cum, culpa quisquam odio perspiciatis commodi eos voluptatum nobis hic'
+      description: 'A full plate never stopped a Doer from doing more. You\'re always on the move, going the extra mile, and lending a hand. You\'re hardworking, prudent, and diligent, and even if you don’t always find the perfect balance, you know what’s most important -- quality time with those you love.'
     },
     {
-      combination: ['D', 'C/D', 'A', 'C', 'A/B/C/D'],
-      type: 'Move and Shaker // Visionary',
-      segment: 'Drive',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat perferendis nihil ullam exercitationem neque, quod perspiciatis laboriosam repellendus recusandae'
+      combination: ['B', 'C/D', 'B/C/D', 'A/B/C/D', 'A/B/C/D'],
+      type: 'Doer',
+      segment: 'At Capacity',
+      description: 'A full plate never stopped a Doer from doing more. You\'re always on the move, going the extra mile, and lending a hand. You\'re hardworking, prudent, and diligent, and even if you don’t always find the perfect balance, you know what’s most important -- quality time with those you love.'
+    },
+        {
+      combination: ['B', 'B', 'A/B/C/D', 'A/B/C/D', 'A/B/C/D'],
+      type: 'Achiever',
+      segment: 'Driven',
+      description: 'Achievers set the bar high. You’re hard working and won’t stop until you reach your goals. You\'re ambitious, motivated, resourceful, and often find yourself a mentor to others. You’re optimistic about the future, but can be restless if you’re not moving forward on the right path.'
     },
     {
-      combination: ['A', 'A/B/D', 'C/D', 'A/B', 'A/B/C/D'],
+      combination: ['B', 'C/D', 'A', 'A/B/C/D', 'A/B/C/D'],
+      type: 'Achiever',
+      segment: 'Driven',
+      description: 'Achievers set the bar high. You’re hard working and won’t stop until you reach your goals. You\'re ambitious, motivated, resourceful, and often find yourself a mentor to others. You’re optimistic about the future, but can be restless if you’re not moving forward on the right path.'
+    },
+    {
+      combination: ['C', 'A/B/C/D', 'A', 'A/B/C/D', 'A/B/C/D'],
+      type: 'Curator',
+      segment: 'Sophisticated',
+      description: 'Curators have high standards. You know what you’re doing because you\'ve spent your life making smart choices for you and your family. Now, you’re ready and confident enough to step up to the plate and help others tackle challenges and achieve their goals. You’re reliable, ambitious, and always looking for new growth opportunities.'
+    },
+    {
+      combination: ['C', 'B/C', 'D', 'A/B/C/D', 'A/B/C/D'],
+      type: 'Curator',
+      segment: 'Sophisticated',
+      description: 'Curators have high standards. You know what you’re doing because you\'ve spent your life making smart choices for you and your family. Now, you’re ready and confident enough to step up to the plate and help others tackle challenges and achieve their goals. You’re reliable, ambitious, and always looking for new growth opportunities.'
+    },
+    {
+      combination: ['C', 'A/B/C/D', 'B', 'A/B/C/D', 'A/B/C/D'],
+      type: 'Advocate',
+      segment: 'Down to Earth',
+      description: 'Advocates speak frankly and with diplomacy, balancing all sides. You can look beyond yourself and see things for what they really are. That means living life to the fullest, and finding ways to give back to your community whenever you have the chance. You\'re practical, caring, and open to change.'
+    },
+    {
+      combination: ['C', 'A/B/C/D', 'C', 'A/B/C/D', 'A/B/C/D'],
       type: 'Uniter',
       segment: 'Rock Steady',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum impedit tenetur tempore, iste officiis sunt odio, aspernatur culpa'
+      description: 'Keep calm and carry on -- that\'s the motto of a Uniter. You\'re responsible, grounded, and can always be counted on to get the job done. Uniters are driven by a sense of purpose and discipline – it\'s the fundamentals that matter most to you.'
     },
     {
-      combination: ['A', 'A/B/C/D', 'A/B', 'A/B/D', 'A/B/C/D'],
-      type: 'Planner // Advocate // Achiever // Partner',
-      segment: 'Down To Earth',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta, illum praesentium tempore temporibus et officia. Magnam vel,'
+      combination: ['C', 'A/D', 'D', 'A/B/C/D', 'A/B/C/D'],
+      type: 'Uniter',
+      segment: 'Rock Steady',
+      description: 'Keep calm and carry on -- that\'s the motto of a Uniter. You\'re responsible, grounded, and can always be counted on to get the job done. Uniters are driven by a sense of purpose and discipline – it\'s the fundamentals that matter most to you.'
     },
     {
-      combination: ['A', 'A/B/C/D', 'A/D', 'C', 'A/B/C/D'],
-      type: 'Giver',
-      segment: 'Sophisticated',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus aliquam, temporibus, aspernatur, enim totam quae consectetur veniam'
-    },
-    {
-      combination: ['C', 'A/B/C/D', 'A/D', 'A/B/C/D', 'A/B/C/D'],
-      type: 'Thought Leader',
+      combination: ['D', 'A/B/C', 'A', 'A/B/C/D', 'A/B/C/D'],
+      type: 'Planners',
       segment: 'Measure Twice',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit reiciendis ratione, alias velit unde expedita iusto veniam sapiente inventore'
+      description: 'Planners are natural role models and leaders. Life is an adventure and you take advantage of every opportunity it hands you, but you do it responsibly. You’ve accumulated a wealth of experience -- and you enjoy mentoring others. You\'re open, diligent, and innovative.'
     },
     {
-      combination: ['C', 'A', 'C/D', 'A/B/C/D', 'A/B/C/D'],
-      type: 'Advocate // Partner',
+      combination: ['D', 'B/C', 'D', 'A/B/C/D', 'A/B/C/D'],
+      type: 'Planners',
+      segment: 'Measure Twice',
+      description: 'Planners are natural role models and leaders. Life is an adventure and you take advantage of every opportunity it hands you, but you do it responsibly. You’ve accumulated a wealth of experience -- and you enjoy mentoring others. You\'re open, diligent, and innovative.'
+    },
+    {
+      combination: ['D', 'A/B/C', 'B/C', 'A/B/C/D', 'A/B/C/D'],
+      type: 'Partner',
       segment: 'Devoted',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. At dolor exercitationem dicta vitae enim voluptatem, quaerat illo, ipsa'
+      description: 'As a Partner, you\'re someone who puts the best of themselves into everything you do. You are a role model -- in your personal life, in your work life, and in your community. You\'re committed, reliable, and values-driven.'
+    },
+    {
+      combination: ['D', 'A', 'D', 'A/B/C/D', 'A/B/C/D'],
+      type: 'Partner',
+      segment: 'Devoted',
+      description: 'As a Partner, you\'re someone who puts the best of themselves into everything you do. You are a role model -- in your personal life, in your work life, and in your community. You\'re committed, reliable, and values-driven.'
+    },
+    {
+      combination: ['D', 'D', 'A/D', 'A/B/C/D', 'A/B/C/D'],
+      type: 'Achiever',
+      segment: 'Driven',
+      description: 'Achievers set the bar high. You’re hard working and won’t stop until you reach your goals. You\'re ambitious, motivated, resourceful, and often find yourself a mentor to others. You’re optimistic about the future, but can be restless if you’re not moving forward on the right path.'
+    },
+    {
+      combination: ['D', 'D', 'B/C', 'A/B/C/D', 'A/B/C/D'],
+      type: 'Doer',
+      segment: 'At Capacity',
+      description: 'A full plate never stopped a Doer from doing more. You\'re always on the move, going the extra mile, and lending a hand. You\'re hardworking, prudent, and diligent, and even if you don’t always find the perfect balance, you know what’s most important - quality time with those you love.'
     }
 
   ]
+
 
 
 
@@ -415,7 +460,7 @@ var QUIZ = (function () {
       var _this = quiz.events;
       _this.submitForm()
 
-      // if ( quiz.config.debug ) quiz.preselectRadioInputs( $(quiz.$el.form.selector) )
+      if ( quiz.config.preselect ) quiz.preselectRadioInputs( $(quiz.$el.form.selector) )
     },
 
 
@@ -460,7 +505,7 @@ var QUIZ = (function () {
         }
 
         // reselect new answers
-        quiz.preselectRadioInputs( $(quiz.$el.form.selector) )
+        if ( quiz.config.preselect ) quiz.preselectRadioInputs( $(quiz.$el.form.selector) )
 
       })
 
