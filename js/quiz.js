@@ -42,7 +42,7 @@ var QUIZ = (function () {
 
 
 
-  
+
   quiz.questions = {}
   quiz.criteria  = []
 
@@ -75,8 +75,6 @@ var QUIZ = (function () {
       quiz.questions = questions;
       quiz.criteria = criteria;
 
-      // bind events
-      quiz.events.init()
 
       // render quiz
       quiz.renderQuiz({
@@ -84,6 +82,10 @@ var QUIZ = (function () {
         custom_class : 'quiz-theme'
       }, function ($form) {
       
+        // bind events
+        quiz.events.init()
+
+        // bind custom events
         quiz.customEvents.applyQuizContainerOverflowWidthPercent( $form )
         quiz.customEvents.radioOnClick( $form )
                   
@@ -94,8 +96,11 @@ var QUIZ = (function () {
 
 
     // Override hooks here, templates below
-    this.hooks.afterSubmit = function(event, data) {
-      console.log('%c HOOK - afterSubmit ', 'background: #029C00; color: #FFFFFF', event, data);
+    this.hooks.afterSubmit = function(event, answers) {
+      console.log('%c HOOK - afterSubmit ', 'background: #029C00; color: #FFFFFF', event, answers);
+    } 
+    this.hooks.formComplete = function(answers) {
+      console.log('%c HOOK - formComplete ', 'background: #029C00; color: #FFFFFF', answers);
     }
 
   }
@@ -137,6 +142,12 @@ var QUIZ = (function () {
         // Slide to next question set
         quiz.customEvents.slideToNextQuestionSet($form, current_slide)
 
+        // if form is complete, fire listener
+        if ( quiz.customEvents.isCurrentSlideLast(current_slide) ) {
+          var answers = getFormData($form)
+          quiz.hooks.formComplete( quiz.getQuizAnswersAsArray(answers) )
+        }
+
       })
 
       // can change to fieldset.onChange
@@ -165,6 +176,14 @@ var QUIZ = (function () {
 
       $form.attr('width', count+'%');
 
+    },
+
+    isCurrentSlideLast: function(current) {
+      var normalized_index = current + 1;
+
+      if ( normalized_index === quiz.customEvents.getTotalQuestionCount() ) {
+        return true;
+      }
     },
 
     slideToNextQuestionSet: function(form, current) {
@@ -287,7 +306,9 @@ var QUIZ = (function () {
 
     init: function() {
       var _this = quiz.events;
+
       _this.submitForm()
+      
 
       if ( quiz.config.preselect ) quiz.preselectRadioInputs( $(quiz.$el.form.selector) )
     },
@@ -306,16 +327,15 @@ var QUIZ = (function () {
         }
 
         // get form data
-        var answers = getFormData($form)
+        var answers = getFormData( $(quiz.$el.form.selector) )
 
         // get combination results
         var answers_array = quiz.getQuizAnswersAsArray(answers),
             result        = quiz.compareCombinationToCriteria(answers_array)
 
-        console.log('answers_array',answers_array)
 
         // HOOKS
-        quiz.hooks.afterSubmit( event, answers )
+        quiz.hooks.afterSubmit( event, answers_array )
 
         // clear output & debug divs
         quiz.$el.output.empty()
@@ -455,10 +475,12 @@ var QUIZ = (function () {
    */
   quiz.hooks = {
 
+    formComplete: function(answers) {
+      return answers;
+    },
 
     afterSubmit: function(event, data) {
       return [event, data];
-      // console.log('%c HOOK - afterSubmit ', 'background: #029C00; color: #FFFFFF', event, data);
     }
 
   }
