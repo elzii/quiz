@@ -42,6 +42,10 @@ var QUIZ = (function () {
 
 
 
+  
+  quiz.questions = {}
+  quiz.criteria  = []
+
 
 
 
@@ -50,24 +54,40 @@ var QUIZ = (function () {
    */
   quiz.init = function () {
     
-    this.renderQuiz({
-      questions    : quiz.questions,
-      custom_class : 'quiz-theme'
-    }, function ($form) {
+    // this.renderQuiz({
+    //   questions    : quiz.questions,
+    //   custom_class : 'quiz-theme'
+    // }, function ($form) {
     
-      quiz.customEvents.applyQuizContainerOverflowWidthPercent( $form )
-      quiz.customEvents.radioOnClick( $form )
+    //   quiz.customEvents.applyQuizContainerOverflowWidthPercent( $form )
+    //   quiz.customEvents.radioOnClick( $form )
                 
-    })
-
-    this.events.init()
+    // })
+    // this.events.init()
+    
 
     
-    this.loadQuizFile('json/quiz.json', function (res, err) {
+    quiz.loadQuizFile('json/quiz.json', function (res, err) {
       var questions = res.questions,
           criteria  = res.criteria;
 
+      // set questions & criteria to global
+      quiz.questions = questions;
+      quiz.criteria = criteria;
 
+      // bind events
+      quiz.events.init()
+
+      // render quiz
+      quiz.renderQuiz({
+        questions    : questions,
+        custom_class : 'quiz-theme'
+      }, function ($form) {
+      
+        quiz.customEvents.applyQuizContainerOverflowWidthPercent( $form )
+        quiz.customEvents.radioOnClick( $form )
+                  
+      })
 
 
     })
@@ -134,7 +154,7 @@ var QUIZ = (function () {
 
     getTotalQuestionCount: function(questions) {
       var questions = questions || quiz.questions;
-      return Object.keys(quiz.questions).length;
+      return Object.keys(questions).length;
     },
 
     applyQuizContainerOverflowWidthPercent: function(form) {
@@ -186,271 +206,6 @@ var QUIZ = (function () {
 
 
 
-
-  quiz.tempImages = {
-    '1' : 'http://i.imgur.com/K77sVjz.png',
-    '2' : 'http://i.imgur.com/cQ3cS7P.png',
-    '3' : 'http://i.imgur.com/RHiuxk3.png',
-    '4' : 'http://i.imgur.com/a7jrcKt.png',
-  }
-
-  /**
-   * Quiz
-   * -------------
-   * @template
-  '#' : {
-    question: '',
-    answers: [
-      {'a': ''},
-      {'b': ''},
-      {'c': ''},
-      {'d': ''}
-    ]
-  }
-   */
-  quiz.questions = {
-
-    '1' : {
-      question: 'Identify the year you were born within the following ranges',
-      answers: {
-        'A': {
-          title: '1982-2004 Millenial',
-          image: 'http://i.imgur.com/K77sVjz.png' 
-        },
-        'B': {
-          title: '1965-1981 Generation X',
-          image: 'http://i.imgur.com/cQ3cS7P.png' 
-        },
-        'C': {
-          title: '1946-1964 Baby Boomer',
-          image: 'http://i.imgur.com/RHiuxk3.png' 
-        },
-        'D': {
-          title: '1924-1945 Maturists (Silent Generation)',
-          image: 'http://i.imgur.com/a7jrcKt.png' 
-        }
-      }
-    },
-
-
-    '2' : {
-      question: 'How do you spend your free moments?',
-      answers: {
-        'A': {
-          title: 'With family',
-          image: 'http://i.imgur.com/K77sVjz.png',
-        },
-        'B': {
-          title: 'With friends',
-          image: 'http://i.imgur.com/cQ3cS7P.png',
-        },
-        'C': {
-          title: 'On my own',
-          image: 'http://i.imgur.com/RHiuxk3.png',
-        },
-        'D': {
-          title: 'Being active',
-          image: 'http://i.imgur.com/a7jrcKt.png',
-        },
-      }
-    },
-
-
-    '3' : {
-      question: 'What comes to mind when you think about work?',
-      answers: {
-        'A': {
-          title: 'It’s my passion',
-          image: 'http://i.imgur.com/K77sVjz.png',
-        },
-        'B': {
-          title: 'Have to, but don’t love it',
-          image: 'http://i.imgur.com/cQ3cS7P.png',
-        },
-        'C': {
-          title: 'Provide for my family',
-          image: 'http://i.imgur.com/RHiuxk3.png',
-        },
-        'D': {
-          title: 'Retirement',
-          image: 'http://i.imgur.com/a7jrcKt.png',
-        },
-      }
-    },
-
-    '4' : {
-      question: 'How do you invest in others?',
-      answers: {
-        'A': {
-          title: 'Acts of Service',
-          image: 'http://i.imgur.com/K77sVjz.png',
-        },
-        'B': {
-          title: 'Quality Time',
-          image: 'http://i.imgur.com/cQ3cS7P.png',
-        },
-        'C': {
-          title: 'Giving Gifts',
-          image: 'http://i.imgur.com/RHiuxk3.png',
-        },
-        'D': {
-          title: 'Words of Encouragement',
-          image: 'http://i.imgur.com/a7jrcKt.png',
-        },
-      }
-    },
-
-    '5' : {
-      question: 'What brings you joy?',
-      answers: {
-        'A': {
-          title: 'Seeing Someone Graduate',
-          image: 'http://i.imgur.com/K77sVjz.png',
-        },
-        'B': {
-          title: 'Happy Children',
-          image: 'http://i.imgur.com/cQ3cS7P.png',
-        },
-        'C': {
-          title: 'Clean Bill of Health',
-          image: 'http://i.imgur.com/RHiuxk3.png',
-        },
-        'D': {
-          title: 'Financial Stability',
-          image: 'http://i.imgur.com/a7jrcKt.png',
-        },
-      }
-    }
-
-  }
-
-
-  /**
-   * Segments
-   */
-  quiz.criteria = [
-    {
-      combination: ['A', 'A', 'A/B/C/D', 'A/B/C/D', 'A/B/C/D'],
-      type: 'Connector',
-      segment: 'Connected',
-      description: 'As a Connector, you like learning about the world around you and love when family and friends join you for the ride. You’re interested in experiencing your community in a close-up and personal way, and finding ways to improve it and yourself. You’re open-minded about new directions and balanced when it comes to priorities.'
-    },
-    {
-      combination: ['A', 'C/D', 'B/C/D', 'A/B/C/D', 'A/B/C/D'],
-      type: 'Connector',
-      segment: 'Connected',
-      description: 'As a Connector, you like learning about the world around you and love when family and friends join you for the ride. You’re interested in experiencing your community in a close-up and personal way, and finding ways to improve it and yourself. You’re open-minded about new directions and balanced when it comes to priorities.'
-    },
-    {
-      combination: ['A', 'B', 'A/B/C/D', 'A/B/C/D', 'A/B/C/D'],
-      type: 'Trend Setter',
-      segment: 'Expressive',
-      description: 'As a Trend Setter, you\'re unique and not afraid to forge your own path, knowing that others may follow your lead. By marching to the beat of your own drum, you naturally inspire others to take risks and challenge the status quo. You\'re confident, independent, and capable.'
-    },
-    {
-      combination: ['A', 'C/D', 'A', 'A/B/C/D', 'A/B/C/D'],
-      type: 'Trend Setter',
-      segment: 'Expressive',
-      description: 'As a Trend Setter, you\'re unique and not afraid to forge your own path, knowing that others may follow your lead. By marching to the beat of your own drum, you naturally inspire others to take risks and challenge the status quo. You\'re confident, independent, and capable.'
-    },
-    {
-      combination: ['B', 'A', 'A/B/C/D', 'A/B/C/D', 'A/B/C/D'],
-      type: 'Doer',
-      segment: 'At Capacity',
-      description: 'A full plate never stopped a Doer from doing more. You\'re always on the move, going the extra mile, and lending a hand. You\'re hardworking, prudent, and diligent, and even if you don’t always find the perfect balance, you know what’s most important - quality time with those you love.'
-    },
-    {
-      combination: ['B', 'C/D', 'B/C/D', 'A/B/C/D', 'A/B/C/D'],
-      type: 'Doer',
-      segment: 'At Capacity',
-      description: 'A full plate never stopped a Doer from doing more. You\'re always on the move, going the extra mile, and lending a hand. You\'re hardworking, prudent, and diligent, and even if you don’t always find the perfect balance, you know what’s most important - quality time with those you love.'
-    },
-        {
-      combination: ['B', 'B', 'A/B/C/D', 'A/B/C/D', 'A/B/C/D'],
-      type: 'Achiever',
-      segment: 'Driven',
-      description: 'Achievers set the bar high. You’re hard working and won’t stop until you reach your goals. You\'re ambitious, motivated, resourceful, and often find yourself a mentor to others. You’re optimistic about the future, but can be restless if you’re not moving forward on the right path.'
-    },
-    {
-      combination: ['B', 'C/D', 'A', 'A/B/C/D', 'A/B/C/D'],
-      type: 'Achiever',
-      segment: 'Driven',
-      description: 'Achievers set the bar high. You’re hard working and won’t stop until you reach your goals. You\'re ambitious, motivated, resourceful, and often find yourself a mentor to others. You’re optimistic about the future, but can be restless if you’re not moving forward on the right path.'
-    },
-    {
-      combination: ['C', 'A/B/C/D', 'A', 'A/B/C/D', 'A/B/C/D'],
-      type: 'Curator',
-      segment: 'Sophisticated',
-      description: 'Curators have high standards. You know what you’re doing because you\'ve spent your life making smart choices for you and your family. Now, you’re ready and confident enough to step up to the plate and help others tackle challenges and achieve their goals. You’re reliable, ambitious, and always looking for new growth opportunities.'
-    },
-    {
-      combination: ['C', 'B/C', 'D', 'A/B/C/D', 'A/B/C/D'],
-      type: 'Curator',
-      segment: 'Sophisticated',
-      description: 'Curators have high standards. You know what you’re doing because you\'ve spent your life making smart choices for you and your family. Now, you’re ready and confident enough to step up to the plate and help others tackle challenges and achieve their goals. You’re reliable, ambitious, and always looking for new growth opportunities.'
-    },
-    {
-      combination: ['C', 'A/B/C/D', 'B', 'A/B/C/D', 'A/B/C/D'],
-      type: 'Advocate',
-      segment: 'Down to Earth',
-      description: 'Advocates speak frankly and with diplomacy, balancing all sides. You can look beyond yourself and see things for what they really are. That means living life to the fullest, and finding ways to give back to your community whenever you have the chance. You\'re practical, caring, and open to change.'
-    },
-    {
-      combination: ['C', 'A/B/C/D', 'C', 'A/B/C/D', 'A/B/C/D'],
-      type: 'Uniter',
-      segment: 'Rock Steady',
-      description: 'Keep calm and carry on - that\'s the motto of a Uniter. You\'re responsible, grounded, and can always be counted on to get the job done. Uniters are driven by a sense of purpose and discipline – it\'s the fundamentals that matter most to you.'
-    },
-    {
-      combination: ['C', 'A/D', 'D', 'A/B/C/D', 'A/B/C/D'],
-      type: 'Uniter',
-      segment: 'Rock Steady',
-      description: 'Keep calm and carry on - that\'s the motto of a Uniter. You\'re responsible, grounded, and can always be counted on to get the job done. Uniters are driven by a sense of purpose and discipline – it\'s the fundamentals that matter most to you.'
-    },
-    {
-      combination: ['D', 'A/B/C', 'A', 'A/B/C/D', 'A/B/C/D'],
-      type: 'Planners',
-      segment: 'Measure Twice',
-      description: 'Planners are natural role models and leaders. Life is an adventure and you take advantage of every opportunity it hands you, but you do it responsibly. You’ve accumulated a wealth of experience - and you enjoy mentoring others. You\'re open, diligent, and innovative.'
-    },
-    {
-      combination: ['D', 'B/C', 'D', 'A/B/C/D', 'A/B/C/D'],
-      type: 'Planners',
-      segment: 'Measure Twice',
-      description: 'Planners are natural role models and leaders. Life is an adventure and you take advantage of every opportunity it hands you, but you do it responsibly. You’ve accumulated a wealth of experience - and you enjoy mentoring others. You\'re open, diligent, and innovative.'
-    },
-    {
-      combination: ['D', 'A/B/C', 'B/C', 'A/B/C/D', 'A/B/C/D'],
-      type: 'Partner',
-      segment: 'Devoted',
-      description: 'As a Partner, you\'re someone who puts the best of themselves into everything you do. You are a role model - in your personal life, in your work life, and in your community. You\'re committed, reliable, and values-driven.'
-    },
-    {
-      combination: ['D', 'A', 'D', 'A/B/C/D', 'A/B/C/D'],
-      type: 'Partner',
-      segment: 'Devoted',
-      description: 'As a Partner, you\'re someone who puts the best of themselves into everything you do. You are a role model - in your personal life, in your work life, and in your community. You\'re committed, reliable, and values-driven.'
-    },
-    {
-      combination: ['D', 'D', 'A/D', 'A/B/C/D', 'A/B/C/D'],
-      type: 'Achiever',
-      segment: 'Driven',
-      description: 'Achievers set the bar high. You’re hard working and won’t stop until you reach your goals. You\'re ambitious, motivated, resourceful, and often find yourself a mentor to others. You’re optimistic about the future, but can be restless if you’re not moving forward on the right path.'
-    },
-    {
-      combination: ['D', 'D', 'B/C', 'A/B/C/D', 'A/B/C/D'],
-      type: 'Doer',
-      segment: 'At Capacity',
-      description: 'A full plate never stopped a Doer from doing more. You\'re always on the move, going the extra mile, and lending a hand. You\'re hardworking, prudent, and diligent, and even if you don’t always find the perfect balance, you know what’s most important - quality time with those you love.'
-    }
-
-  ]
-
-
-
-
-
-
   /**
    * Render Quiz Questions
    * 
@@ -470,7 +225,7 @@ var QUIZ = (function () {
     
     $html +=   '<div class="quiz-questions clearfix">';
 
-    $.each( quiz.questions, function (number, pair) {
+    $.each( questions, function (number, pair) {
       
       var question = pair.question,
           answers  = pair.answers;
