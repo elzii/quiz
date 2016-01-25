@@ -400,3 +400,17 @@ quiz.criteria = [
     }
 
   }
+
+
+
+
+  this.renderQuiz({
+    questions    : quiz.questions,
+    custom_class : 'quiz-theme'
+  }, function ($form) {
+
+    quiz.customEvents.applyQuizContainerOverflowWidthPercent( $form )
+    quiz.customEvents.radioOnClick( $form )
+              
+  })
+  this.events.init()

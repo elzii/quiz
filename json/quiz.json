@@ -5,19 +5,19 @@
       "answers": {
         "A": {
           "title": "1982-2004 Millenial",
-          "image": "http://i.imgur.com/K77sVjz.png"
+          "image": "images/temp/01.jpg"
         },
         "B": {
           "title": "1965-1981 Generation X",
-          "image": "http://i.imgur.com/cQ3cS7P.png"
+          "image": "images/temp/02.jpg"
         },
         "C": {
           "title": "1946-1964 Baby Boomer",
-          "image": "http://i.imgur.com/RHiuxk3.png"
+          "image": "images/temp/03.jpg"
         },
         "D": {
           "title": "1924-1945 Maturists (Silent Generation)",
-          "image": "http://i.imgur.com/a7jrcKt.png"
+          "image": "images/temp/04.jpg"
         }
       }
     },
@@ -26,19 +26,19 @@
       "answers": {
         "A": {
           "title": "With family",
-          "image": "http://i.imgur.com/K77sVjz.png"
+          "image": "images/temp/05.jpg"
         },
         "B": {
           "title": "With friends",
-          "image": "http://i.imgur.com/cQ3cS7P.png"
+          "image": "images/temp/06.jpg"
         },
         "C": {
           "title": "On my own",
-          "image": "http://i.imgur.com/RHiuxk3.png"
+          "image": "images/temp/07.jpg"
         },
         "D": {
           "title": "Being active",
-          "image": "http://i.imgur.com/a7jrcKt.png"
+          "image": "images/temp/08.jpg"
         }
       }
     },
@@ -47,19 +47,19 @@
       "answers": {
         "A": {
           "title": "It’s my passion",
-          "image": "http://i.imgur.com/K77sVjz.png"
+          "image": "images/temp/09.jpg"
         },
         "B": {
           "title": "Have to, but don’t love it",
-          "image": "http://i.imgur.com/cQ3cS7P.png"
+          "image": "images/temp/10.jpg"
         },
         "C": {
           "title": "Provide for my family",
-          "image": "http://i.imgur.com/RHiuxk3.png"
+          "image": "images/temp/11.jpg"
         },
         "D": {
           "title": "Retirement",
-          "image": "http://i.imgur.com/a7jrcKt.png"
+          "image": "images/temp/12.jpg"
         }
       }
     },
@@ -68,19 +68,19 @@
       "answers": {
         "A": {
           "title": "Acts of Service",
-          "image": "http://i.imgur.com/K77sVjz.png"
+          "image": "images/temp/13.jpg"
         },
         "B": {
           "title": "Quality Time",
-          "image": "http://i.imgur.com/cQ3cS7P.png"
+          "image": "images/temp/14.jpg"
         },
         "C": {
           "title": "Giving Gifts",
-          "image": "http://i.imgur.com/RHiuxk3.png"
+          "image": "images/temp/15.jpg"
         },
         "D": {
           "title": "Words of Encouragement",
-          "image": "http://i.imgur.com/a7jrcKt.png"
+          "image": "images/temp/16.jpg"
         }
       }
     },
@@ -89,19 +89,19 @@
       "answers": {
         "A": {
           "title": "Seeing Someone Graduate",
-          "image": "http://i.imgur.com/K77sVjz.png"
+          "image": "images/temp/17.jpg"
         },
         "B": {
           "title": "Happy Children",
-          "image": "http://i.imgur.com/cQ3cS7P.png"
+          "image": "images/temp/18.jpg"
         },
         "C": {
           "title": "Clean Bill of Health",
-          "image": "http://i.imgur.com/RHiuxk3.png"
+          "image": "images/temp/19.jpg"
         },
         "D": {
           "title": "Financial Stability",
-          "image": "http://i.imgur.com/a7jrcKt.png"
+          "image": "images/temp/20.jpg"
         }
       }
     }

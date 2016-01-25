@@ -47,6 +47,14 @@ var QUIZ = (function () {
   quiz.criteria  = []
 
 
+  quiz.sampleImages = [
+    'http://i.imgur.com/K77sVjz.png',
+    'http://i.imgur.com/cQ3cS7P.png',
+    'http://i.imgur.com/RHiuxk3.png',
+    'http://i.imgur.com/a7jrcKt.png',
+  ]
+
+
 
 
   /**
@@ -54,18 +62,6 @@ var QUIZ = (function () {
    */
   quiz.init = function () {
     
-    // this.renderQuiz({
-    //   questions    : quiz.questions,
-    //   custom_class : 'quiz-theme'
-    // }, function ($form) {
-    
-    //   quiz.customEvents.applyQuizContainerOverflowWidthPercent( $form )
-    //   quiz.customEvents.radioOnClick( $form )
-                
-    // })
-    // this.events.init()
-    
-
     
     quiz.loadQuizFile('json/quiz.json', function (res, err) {
       var questions = res.questions,
@@ -154,7 +150,7 @@ var QUIZ = (function () {
     },
 
     clearSelectedRadio: function($form) {
-      $form.find('.quiz-question__inner.active').removeClass('active')
+      $form.find('.quiz-question__outer.active').removeClass('active')
     },
     
     applyClassToRadioParentOnClick: function() {
@@ -251,7 +247,6 @@ var QUIZ = (function () {
 
 
       $html += '<div class="quiz-question">';
-      // $html += '  <div class="quiz-question__inner">';
       $html += '<h4 class="quiz-question__title">'+question+'</h4>';
       $html +=   '<div id="fieldset-'+number+'" class="quiz-question__fieldset quiz-question__answers">';
 
@@ -267,11 +262,12 @@ var QUIZ = (function () {
         // var title   = answer.title,
         //     image   = answer.image;
 
-        $html += '<div class="quiz-question__inner" style="background-image:url('+answer.image+')"> \
-                    <label class="quiz-question__label"> \
-                      <input class="quiz-question__input quiz-question__input--radio" type="radio" name="'+number+'" value="'+key+'" required> \
-                        <span>'+answer.title+'</span> \
-                    </label> \
+        $html += '<div class="quiz-question__outer" style="background-image:url('+answer.image+')"> \
+                    <div class="quiz-question__overlay"></div> \
+                      <label class="quiz-question__label"> \
+                        <input class="quiz-question__input quiz-question__input--radio" type="radio" name="'+number+'" value="'+key+'" required> \
+                          <span>'+answer.title+'</span> \
+                      </label> \
                   </div>';
 
       })
