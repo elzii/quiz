@@ -31,6 +31,7 @@ var config = {
     css: './css',
     js: './js',  
     json: './json',  
+    images: './images',  
   },
   ports: {
     express: 6666,
@@ -100,8 +101,8 @@ gulp.task('build', function() {
     config.paths.js + '/**/*.js', 
     config.paths.css + '/style.css', 
     config.paths.css + '/quiz-theme.css', 
-    config.paths.json + '**/*.json', 
-    config.paths.images + '**/*.jpg', 
+    config.paths.json + '/**/*.json', 
+    config.paths.images + '/**/*.jpg', 
     ],
     { base: './' }
   )
