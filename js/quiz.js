@@ -306,7 +306,7 @@ var QUIZ = (function () {
       _this.submitForm()
       
 
-      if ( quiz.config.preselect ) quiz.preselectRadioInputs( $(quiz.$el.form.selector) )
+      // if ( quiz.config.preselect ) quiz.preselectRadioInputs( $(quiz.$el.form.selector) )
     },
 
 
@@ -348,7 +348,7 @@ var QUIZ = (function () {
 
           quiz.$el.output.append('<h1>No combination found</h1>')
 
-          if ( quiz.config.debug ) quiz.debugInvalidCombations(answers_array)
+          // if ( quiz.config.debug ) quiz.debugInvalidCombations(answers_array)
         }
 
         // reselect new answers

@@ -30,6 +30,7 @@ var config = {
   paths: {
     css: './css',
     js: './js',  
+    json: './json',  
   },
   ports: {
     express: 6666,
@@ -94,7 +95,32 @@ gulp.task('styles', function() {
  * TASK: Build
  */
 gulp.task('build', function() {
-  
+  return gulp.src([
+    './index.html', 
+    config.paths.js + '/**/*.js', 
+    config.paths.css + '/style.css', 
+    config.paths.css + '/quiz-theme.css', 
+    config.paths.json + '**/*.json', 
+    config.paths.images + '**/*.jpg', 
+    ],
+    { base: './' }
+  )
+  .pipe(gulp.dest('./dist/'));
+})
+
+gulp.task('partials', function() {
+  return gulp.src([ paths.src + '**/*.html'])
+    .pipe(fileinclude({
+      prefix: '@@',
+      basepath: './app/partials/'
+    }))
+    .pipe(rename({
+      extname : ''
+    }))
+    .pipe(rename({
+      extname : '.html'
+    }))
+    .pipe(gulp.dest(paths.app))
 })
 
 
